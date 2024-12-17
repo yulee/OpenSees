@@ -94,7 +94,7 @@ TrapezoidalTimeSeriesIntegrator::integrate(TimeSeries *theSeries, double delta)
 
   dummyTime = theSeries->getStartTime();
 
-  F = 0.0
+  F = 0.0;
 
   fi = 0.0;
 
@@ -159,7 +159,7 @@ TrapezoidalTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, double del
       
   dummyTime = theSeries->getStartTime();
 
-  f = 0.0
+  f = 0.0;
 
   Fi = 0.0;
 

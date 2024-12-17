@@ -91,11 +91,11 @@ TimeSeries* SimpsonTimeSeriesIntegrator::integrate(TimeSeries *theSeries, double
 
   dummyTime = theSeries->getStartTime();
 
-  Fi = 0.0
-  Fj = 0.0
+  Fi = 0.0;
+  Fj = 0.0;
 
-  fi = 0.0
-  fj = 0.0
+  fi = 0.0;
+  fj = 0.0;
 
   for (long long i = 0; i < numSteps; i++, dummyTime += delta)  {
 
@@ -162,11 +162,11 @@ TimeSeries* SimpsonTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, do
 
   dummyTime = theSeries->getStartTime();
 
-  Fi = 0.0
-  Fj = 0.0
+  Fi = 0.0;
+  Fj = 0.0;
 
-  fi = 0.0
-  fj = 0.0
+  fi = 0.0;
+  fj = 0.0;
 
   for (long long i = 0; i < numSteps; i++, dummyTime += delta)  {
 
