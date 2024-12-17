@@ -101,7 +101,7 @@ TimeSeries* SimpsonTimeSeriesIntegrator::integrate(TimeSeries *theSeries, double
 
     fk = theSeries->getFactor(dummyTime);
     // Apply the Simpson's rule to update the integral
-    Fk = Fi + delta / 3.0 * (fi + 4.0 * fj + fk)
+    Fk = Fi + delta / 3.0 * (fi + 4.0 * fj + fk);
 
     (*theInt)[i] = Fk;
 
@@ -172,7 +172,7 @@ TimeSeries* SimpsonTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, do
 
     Fk = theSeries->getFactor(dummyTime);
     // Apply the Simpson's rule to update the derivative
-    fk = 3.0 * (Fk - Fi) / delta - fi - 4.0 * fj
+    fk = 3.0 * (Fk - Fi) / delta - fi - 4.0 * fj;
 
     (*theDif)[i] = fk;
 

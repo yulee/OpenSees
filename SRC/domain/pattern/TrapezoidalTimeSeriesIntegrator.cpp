@@ -104,7 +104,7 @@ TrapezoidalTimeSeriesIntegrator::integrate(TimeSeries *theSeries, double delta)
     // Apply the trapezoidal rule to update the integral
     F = F + 0.5 * delta * (fi + fj);
 
-    (*theInt)[i] = F
+    (*theInt)[i] = F;
 
     fi = fj;
   }
@@ -169,7 +169,7 @@ TrapezoidalTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, double del
     // Apply the trapezoidal rule to update the derivative
     f = 2.0 * (Fj - Fi) / delta - f;
 
-    (*theDif)[i] = f
+    (*theDif)[i] = f;
 
     Fi = Fj;
   }
