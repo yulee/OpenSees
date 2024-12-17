@@ -202,8 +202,6 @@ GroundMotionRecord::getAccel(double time)
   
     if (theAccelTimeSeries != 0)
       return theAccelTimeSeries->getFactor(time);
-    else
-      return 0.0;
 
     // if theVel is not 0, differentiate vel series to get accel series
     else if (theVelTimeSeries != 0) {

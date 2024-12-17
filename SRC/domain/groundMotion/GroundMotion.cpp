@@ -297,8 +297,6 @@ GroundMotion::getAccel(double time)
   
   if (theAccelSeries != 0)
     return fact*(theAccelSeries->getFactor(time));
-  else
-    return 0.0;
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {
@@ -333,8 +331,6 @@ GroundMotion::getAccelSensitivity(double time)
   
   if (theAccelSeries != 0)
     return fact*(theAccelSeries->getFactorSensitivity(time));
-  else
-    return 0.0;
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {
@@ -415,9 +411,9 @@ GroundMotion::getDisp(double time)
     if (theVelSeries != 0) {
       theDispSeries = this->integrate(theVelSeries, delta);
       if (theDispSeries != 0)
-	return fact*(theDispSeries->getFactor(time));
+        return fact*(theDispSeries->getFactor(time));
       else
-	return 0.0;
+        return 0.0;
     } else
       return 0.0;
   }
