@@ -51,7 +51,7 @@ class GroundMotion : public MovableObject
 		 TimeSeries *velSeries, 
 		 TimeSeries *accelSeries,
 		 TimeSeriesIntegrator *theIntegrator = 0,
-		 double dTintegration = 0.01, double fact = 1.0);
+		 double dTintegration = 0.02, double fact = 1.0);
     
     GroundMotion(int classTag);
     virtual ~GroundMotion();
@@ -68,8 +68,8 @@ class GroundMotion : public MovableObject
     virtual const  Vector &getDispVelAccel(double time);
     
     void setIntegrator(TimeSeriesIntegrator *integrator);
-    TimeSeries *integrate(TimeSeries *theSeries, double delta = 0.01); 
-    TimeSeries *differentiate(TimeSeries *theSeries, double delta = 0.01); 
+    TimeSeries *integrate(TimeSeries *theSeries, double delta = 0.02); 
+    TimeSeries *differentiate(TimeSeries *theSeries, double delta = 0.02); 
 
     int sendSelf(int commitTag, Channel &theChannel);
     int recvSelf(int commitTag, Channel &theChannel, 

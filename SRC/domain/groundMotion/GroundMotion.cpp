@@ -43,7 +43,7 @@ void* OPS_GroundMotion()
     TimeSeries* velSeries = 0;
     TimeSeries* dispSeries = 0;
     TimeSeriesIntegrator* seriesIntegrator = 0;
-    double dtInt = 0.02;
+    double dtInt = 0.01;
     double fact = 1.0;
     
     while(OPS_GetNumRemainingInputArgs() > 1) {
@@ -106,6 +106,7 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
     opserr<<theVelSeries->getDuration()<<" "<<theAccelSeries->getDuration()<<"\n";
     opserr<<theVelSeries->getFactor(delta)<<" "<<theAccelSeries->getFactor(delta)<<"\n";
     opserr<<theVelSeries->getFactor(2.0*delta)<<" "<<theAccelSeries->getFactor(2.0*delta)<<"\n";
+    opserr<<theVelSeries->getFactor(3.0*delta)<<" "<<theAccelSeries->getFactor(3.0*delta)<<"\n";
   }
 }
 
