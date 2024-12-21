@@ -31,7 +31,7 @@ ops.timeSeries('Path', 3, '-dt', 0.02, '-values', *disp_values.tolist(), '-facto
 ts_type = ["-accel", "-vel", "-disp"]
 plt.figure()
 
-for i in range(1, 3):     
+for i in range(1, 4):     
     print(f"Running case {i}")
     
     # Apply uniform excitation pattern
