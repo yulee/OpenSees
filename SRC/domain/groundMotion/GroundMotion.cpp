@@ -53,19 +53,19 @@ void* OPS_GroundMotion()
 	    int numData = 1;
 	    if(OPS_GetIntInput(&numData,&tstag) < 0) return 0;
 	    accelSeries = OPS_getTimeSeries(tstag);
-	    dtInt = accelSeries.getTimeIncr()
+	    dtInt = accelSeries->getTimeIncr()
 	} else if(type == "-vel"||type == "-velocity") {
 	    int tstag;
 	    int numData = 1;
 	    if(OPS_GetIntInput(&numData,&tstag) < 0) return 0;
 	    velSeries = OPS_getTimeSeries(tstag);
-	    dtInt = velSeries.getTimeIncr()
+	    dtInt = velSeries->getTimeIncr()
 	} else if(type == "-disp"||type == "-displacement") {
 	    int tstag;
 	    int numData = 1;
 	    if(OPS_GetIntInput(&numData,&tstag) < 0) return 0;
 	    dispSeries = OPS_getTimeSeries(tstag);
-	    dtInt = dispSeries.getTimeIncr()
+	    dtInt = dispSeries->getTimeIncr()
 	} else if(type == "-fact"||type == "-factor") {
 	    int numData = 1;
 	    if(OPS_GetDoubleInput(&numData,&fact) < 0) return 0;
@@ -97,16 +97,17 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
   if (theVelSeries != 0 && theDispSeries == 0 ) 
     theDispSeries = this->integrate(theVelSeries, delta);
 
-  if (theDispSeries != 0 && theVelSeries == 0 ){
+  if (theDispSeries != 0 && theVelSeries == 0 ) {
     opserr<<"differentiating theDispSeries\n";
     theVelSeries = this->differentiate(theDispSeries, delta);
-    opserr<<"differentiating theDispSeries\n";
+    opserr<<theDispSeries->getFactor(delta)<<" "<<theVelSeries->getFactor(delta)<<"\n";
   }
 
-  if (theVelSeries != 0 && theAccelSeries == 0 ){
-    theAccelSeries = this->differentiate(theVelSeries, delta);
+  if (theVelSeries != 0 && theAccelSeries == 0 ) {
     opserr<<"differentiating theVelSeries\n";
-}
+    theAccelSeries = this->differentiate(theVelSeries, delta);
+    opserr<<theVelSeries->getFactor(delta)<<" "<<theAccelSeries->getFactor(delta)<<"\n";
+  }
 }
 
 
