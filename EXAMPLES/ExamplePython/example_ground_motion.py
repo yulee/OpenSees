@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 
-g = 386.4
-
 # Create a basic model with a single node
 ops.wipe()
 ops.model('basic', '-ndm', 2, '-ndf', 3)
@@ -62,10 +60,10 @@ for i in range(1, 4):
 
 # Add analytical displacement to the plot
 plt.plot(time_values, disp_values, label="Analytical Disp", linewidth=2, zorder=0)
-plt.xlabel("Time (s)")
-plt.ylabel("Displacement (inches)")
+plt.xlabel("Time")
+plt.ylabel("Displacement")
 plt.title("Comparison of Displacement for All Cases")
 plt.legend()
 plt.grid()
 plt.show()
-plt.savefig('./build/lib/ground_motion.pdf')
+plt.savefig('./build/lib/ground_motion.png')
