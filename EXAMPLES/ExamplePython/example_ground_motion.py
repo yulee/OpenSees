@@ -23,9 +23,9 @@ vel_values = cumtrapz(accel_values, time_values, initial=0)
 disp_values = cumtrapz(vel_values, time_values, initial=0)
 
 # Create time series for acceleration, velocity, and displacement
-ops.timeSeries('Path', 1, '-time', *time_values.tolist(), '-values', *accel_values.tolist(), '-factor', 1.0)
-ops.timeSeries('Path', 2, '-time', *time_values.tolist(), '-values', *vel_values.tolist(), '-factor', 1.0)
-ops.timeSeries('Path', 3, '-time', *time_values.tolist(), '-values', *disp_values.tolist(), '-factor', 1.0)
+ops.timeSeries('Path', 1, '-dt', 5.0, '-values', *accel_values.tolist(), '-factor', 1.0)
+ops.timeSeries('Path', 2, '-dt', 5.0, '-values', *vel_values.tolist(), '-factor', 1.0)
+ops.timeSeries('Path', 3, '-dt', 5.0, '-values', *disp_values.tolist(), '-factor', 1.0)
 
 # Run cases and compare results
 ts_type = ["-accel", "-vel", "-disp"]
