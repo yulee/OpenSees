@@ -114,7 +114,7 @@ void* OPS_UniformExcitationPattern()
 		return 0;
 	    }
 	
-	    dt = accelSeries->getTimeIncr();
+	    dt = accelSeries->getTimeIncr(0.0);
 	    
 	} else if ((strcmp(flag,"-vel") == 0) || (strcmp(flag,"-velocity") == 0)) {
 
@@ -131,7 +131,7 @@ void* OPS_UniformExcitationPattern()
 		return 0;
 	    }
 	
-	    dt = velSeries->getTimeIncr();
+	    dt = velSeries->getTimeIncr(0.0);
 	
 	} else if ((strcmp(flag,"-disp") == 0) || (strcmp(flag,"-displacement") == 0)) {
 
@@ -149,7 +149,7 @@ void* OPS_UniformExcitationPattern()
 		return 0;
 	    }
 	
-	    dt = dispSeries->getTimeIncr();
+	    dt = dispSeries->getTimeIncr(0.0);
 	
 	} else if ((strcmp(flag,"-int") == 0) || (strcmp(flag,"-integrator") == 0)) {
 
