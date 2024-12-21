@@ -174,7 +174,7 @@ TrapezoidalTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, double del
 
     Fi = Fj;
     if (i < 10)
-      opserr<<i<<" "<<f<<"\n";
+      opserr<<"data"<<i<<" "<<f<<" "<<Fi<<" "<<Fj<<"\n";
   }
 
   // Set the method return value
