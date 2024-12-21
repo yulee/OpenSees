@@ -97,11 +97,20 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
   if (theVelSeries != 0 && theDispSeries == 0 ) 
     theDispSeries = this->integrate(theVelSeries, delta);
 
-  if (theDispSeries != 0 && theVelSeries == 0 ) 
+  if (theDispSeries != 0 && theVelSeries == 0 ) {
+    opserr<<"differentiating theDispSeries\n";
     theVelSeries = this->differentiate(theDispSeries, delta);
+    opserr<<theDispSeries->getFactor(delta)<<" "<<theVelSeries->getFactor(delta)<<"\n";
+  }
 
-  if (theVelSeries != 0 && theAccelSeries == 0 ) 
+  if (theVelSeries != 0 && theAccelSeries == 0 ) {
+    opserr<<"differentiating theVelSeries\n";
     theAccelSeries = this->differentiate(theVelSeries, delta);
+    opserr<<theVelSeries->getDuration()<<" "<<theAccelSeries->getDuration()<<"\n";
+    opserr<<theVelSeries->getFactor(delta)<<" "<<theAccelSeries->getFactor(delta)<<"\n";
+    opserr<<theVelSeries->getFactor(2.0*delta)<<" "<<theAccelSeries->getFactor(2.0*delta)<<"\n";
+    opserr<<theVelSeries->getFactor(3.0*delta)<<" "<<theAccelSeries->getFactor(3.0*delta)<<"\n";
+  }
 }
 
 
@@ -298,8 +307,11 @@ GroundMotion::getAccel(double time)
   if (time < 0.0)
     return 0.0;
   
-  if (theAccelSeries != 0)
+  if (theAccelSeries != 0){
+    if (time < 0.05)
+      opserr<<"getAccel"<<time<<" "<<fact*(theAccelSeries->getFactor(time))<<"\n";
     return fact*(theAccelSeries->getFactor(time));
+  }
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {

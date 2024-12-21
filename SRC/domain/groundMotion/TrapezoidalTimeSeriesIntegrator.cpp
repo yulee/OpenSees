@@ -110,7 +110,7 @@ TrapezoidalTimeSeriesIntegrator::integrate(TimeSeries *theSeries, double delta)
   }
 
   // Set the method return value
-  PathSeries *returnSeries = new PathSeries (0, *theInt, delta, 1.0, true);
+  PathSeries *returnSeries = new PathSeries (0, *theInt, delta, true);
   delete theInt;
 
   if (returnSeries == 0) {
@@ -174,11 +174,11 @@ TrapezoidalTimeSeriesIntegrator::differentiate(TimeSeries *theSeries, double del
 
     Fi = Fj;
     if (i < 10)
-      opserr<<"data"<<f<<" "<<Fi<<" "<<Fj<<"\n";
+      opserr<<i<<" "<<f<<"\n";
   }
 
   // Set the method return value
-  PathSeries *returnSeries = new PathSeries (0, *theDif, delta, 1.0, true);
+  PathSeries *returnSeries = new PathSeries (0, *theDif, delta, true);
   delete theDif;
 
   if (returnSeries == 0) {
