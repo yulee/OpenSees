@@ -348,9 +348,8 @@ TimeSeries* PathTimeSeries::getDerivative()
     Fj = (*thePath)[j];
     f = 2.0 * (Fj - Fi) / (tj - ti) - f;
     (*theDif)[j] = f;
+	ti = tj
     Fi = Fj;
-    if (j < 4)
-      opserr<<"data"<<f<<" "<<ti<<" "<<tj<<" "<<Fi<<" "<<Fj<<"\n";
   }
   PathTimeSeries *returnSeries = new PathTimeSeries(this->getTag(), *theDif, *time, cFactor, useLast);
   delete theDif;
