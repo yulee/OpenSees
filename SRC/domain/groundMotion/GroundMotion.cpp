@@ -92,22 +92,20 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
 {
 
   if (theAccelSeries != 0 && theVelSeries == 0 ) 
-    theVelSeries = this->integrate(theAccelSeries, delta);
+//    theVelSeries = this->integrate(theAccelSeries, delta);
+    theVelSeries = theAccelSeries->getIntegral();
 
   if (theVelSeries != 0 && theDispSeries == 0 ) 
-    theDispSeries = this->integrate(theVelSeries, delta);
+//    theDispSeries = this->integrate(theVelSeries, delta);
+    theDispSeries = theVelSeries->getIntegral();
 
   if (theDispSeries != 0 && theVelSeries == 0 ) 
+//    theVelSeries = this->differentiate(theDispSeries, delta);
     theVelSeries = theDispSeries->getDerivative();
 
-  if (theVelSeries != 0 && theAccelSeries == 0 ) {
+  if (theVelSeries != 0 && theAccelSeries == 0 ) 
+//    theAccelSeries = this->differentiate(theVelSeries, delta);
     theAccelSeries = theVelSeries->getDerivative();
-    opserr<<theVelSeries->getDuration()<<" "<<theAccelSeries->getDuration()<<"\n";
-    opserr<<theVelSeries->getFactor(0.0)<<" "<<theAccelSeries->getFactor(0.0)<<"\n";
-    opserr<<theVelSeries->getFactor(delta)<<" "<<theAccelSeries->getFactor(delta)<<"\n";
-    opserr<<theVelSeries->getFactor(2.0*delta)<<" "<<theAccelSeries->getFactor(2.0*delta)<<"\n";
-    opserr<<theVelSeries->getFactor(3.0*delta)<<" "<<theAccelSeries->getFactor(3.0*delta)<<"\n";
-  }
 }
 
 
@@ -217,7 +215,8 @@ GroundMotion::getPeakAccel(void)
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {
-    theAccelSeries = this->differentiate(theVelSeries, delta);
+//    theAccelSeries = this->differentiate(theVelSeries, delta);
+    theAccelSeries = theVelSeries->getDerivative();
     if (theAccelSeries != 0)
       return fact*(theAccelSeries->getPeakFactor());
     else
@@ -226,9 +225,11 @@ GroundMotion::getPeakAccel(void)
 
   // if theDisp is not 0, differentiate vel series to get accel series
   else if (theDispSeries != 0) {
-    theVelSeries = this->differentiate(theDispSeries, delta);
+//    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
     if (theVelSeries != 0) {
-      theAccelSeries = this->differentiate(theVelSeries, delta);
+//      theAccelSeries = this->differentiate(theVelSeries, delta);
+      theAccelSeries = theVelSeries->getDerivative();
       if (theAccelSeries != 0)
         return fact*(theAccelSeries->getPeakFactor());
       else
@@ -248,7 +249,8 @@ GroundMotion::getPeakVel(void)
 
   // if theAccel is not 0, integrate accel series to get a vel series
   else if (theAccelSeries != 0) {
-    theVelSeries = this->integrate(theAccelSeries, delta);
+//    theVelSeries = this->integrate(theAccelSeries, delta);
+    theVelSeries = theAccelSeries->getIntegral();
     if (theVelSeries != 0)
       return fact*(theVelSeries->getPeakFactor());
     else
@@ -257,7 +259,8 @@ GroundMotion::getPeakVel(void)
 
   // if theDisp is not 0, differentiate disp series to get vel series
   else if (theDispSeries != 0) {
-    theVelSeries = this->differentiate(theDispSeries, delta);
+//    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
     if (theVelSeries != 0)
       return fact*(theVelSeries->getPeakFactor());
     else
@@ -275,7 +278,8 @@ GroundMotion::getPeakDisp(void)
 
   // if theVel is not 0, integrate vel series to get disp series
   else if (theVelSeries != 0) {
-    theDispSeries = this->integrate(theVelSeries, delta);
+//    theDispSeries = this->integrate(theVelSeries, delta);
+    theDispSeries = theVelSeries->getIntegral();
     if (theDispSeries != 0)
       return fact*(theDispSeries->getPeakFactor());
     else
@@ -284,9 +288,11 @@ GroundMotion::getPeakDisp(void)
 
   // if theAccel is not 0, integrate vel series to get disp series
   else if (theAccelSeries != 0) {
-    theVelSeries = this->integrate(theAccelSeries, delta);
+//    theVelSeries = this->integrate(theAccelSeries, delta);
+    theVelSeries = theAccelSeries->getIntegral();
     if (theVelSeries != 0) {
-      theDispSeries = this->integrate(theVelSeries, delta);
+//      theDispSeries = this->integrate(theVelSeries, delta);
+      theDispSeries = integrate(theVelSeries->getIntegral();
       if (theDispSeries != 0)
 	return fact*(theDispSeries->getPeakFactor());
       else
@@ -309,7 +315,8 @@ GroundMotion::getAccel(double time)
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {
-    theAccelSeries = this->differentiate(theVelSeries, delta);
+//    theAccelSeries = this->differentiate(theVelSeries, delta);
+    theAccelSeries = theVelSeries->getDerivative();
     if (theAccelSeries != 0)
       return fact*(theAccelSeries->getFactor(time));
     else
@@ -318,9 +325,11 @@ GroundMotion::getAccel(double time)
 
   // if theDisp is not 0, differentiate vel series to get accel series
   else if (theDispSeries != 0) {
-    theVelSeries = this->differentiate(theDispSeries, delta);
+//    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
     if (theVelSeries != 0) {
-      theAccelSeries = this->differentiate(theVelSeries, delta);
+//      theAccelSeries = this->differentiate(theVelSeries, delta);
+      theAccelSeries = theVelSeries->getDerivative();
       if (theAccelSeries != 0)
         return fact*(theAccelSeries->getFactor(time));
       else
@@ -343,6 +352,7 @@ GroundMotion::getAccelSensitivity(double time)
 
   // if theVel is not 0, differentiate vel series to get accel series
   else if (theVelSeries != 0) {
+//    theAccelSeries = this->differentiate(theVelSeries, delta);
     theAccelSeries = this->differentiate(theVelSeries, delta);
     if (theAccelSeries != 0)
       return fact*(theAccelSeries->getFactorSensitivity(time));
@@ -352,9 +362,11 @@ GroundMotion::getAccelSensitivity(double time)
 
   // if theDisp is not 0, differentiate vel series to get accel series
   else if (theDispSeries != 0) {
-    theVelSeries = this->differentiate(theDispSeries, delta);
+//    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
     if (theVelSeries != 0) {
-      theAccelSeries = this->differentiate(theVelSeries, delta);
+//      theAccelSeries = this->differentiate(theVelSeries, delta);
+      theAccelSeries = theVelSeries->getDerivative();
       if (theAccelSeries != 0)
         return fact*(theAccelSeries->getFactorSensitivity(time));
       else
@@ -377,7 +389,8 @@ GroundMotion::getVel(double time)
 
   // if theAccel is not 0, integrate accel series to get a vel series
   else if (theAccelSeries != 0) {
-    theVelSeries = this->integrate(theAccelSeries, delta);
+//    theVelSeries = this->integrate(theAccelSeries, delta);
+    theVelSeries = theAccelSeries->getIntegral();
     if (theVelSeries != 0)
       return fact*(theVelSeries->getFactor(time));
     else
@@ -386,7 +399,8 @@ GroundMotion::getVel(double time)
 
   // if theDisp is not 0, differentiate disp series to get vel series
   else if (theDispSeries != 0) {
-    theVelSeries = this->differentiate(theDispSeries, delta);
+//    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
     if (theVelSeries != 0)
       return fact*(theVelSeries->getFactor(time));
     else
@@ -407,7 +421,8 @@ GroundMotion::getDisp(double time)
 
   // if theVel is not 0, integrate vel series to get disp series
   else if (theVelSeries != 0) {
-    theDispSeries = this->integrate(theVelSeries, delta);
+//    theDispSeries = this->integrate(theVelSeries, delta);
+    theDispSeries = theVelSeries->getIntegral();
     if (theDispSeries != 0)
       return fact*(theDispSeries->getFactor(time));
     else
@@ -416,9 +431,11 @@ GroundMotion::getDisp(double time)
 
   // if theAccel is not 0, integrate vel series to get disp series
   else if (theAccelSeries != 0) {
-    theVelSeries = this->integrate(theAccelSeries, delta);
+//    theVelSeries = this->integrate(theAccelSeries, delta);
+    theVelSeries = theAccelSeries->getIntegral();
     if (theVelSeries != 0) {
-      theDispSeries = this->integrate(theVelSeries, delta);
+//      theDispSeries = this->integrate(theVelSeries, delta);
+      theDispSeries = theVelSeries->getIntegral();
       if (theDispSeries != 0)
         return fact*(theDispSeries->getFactor(time));
       else
