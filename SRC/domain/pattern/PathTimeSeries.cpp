@@ -298,7 +298,7 @@ PathTimeSeries::getCopy(void)
 TimeSeries* PathTimeSeries::getIntegral()
 {
   if (thePath == 0) return 0;
-  Vector* theInt = new Vector(thePath);
+  Vector* theInt = new Vector(thePath->Size());
   if (theInt == 0 || theInt->Size() != thePath->Size()) {
     opserr << "PathTimeSeries::getIntegral() Ran out of memory allocating Vector " << endln;
     if (theInt != 0) delete theInt;
@@ -318,7 +318,7 @@ TimeSeries* PathTimeSeries::getIntegral()
     ti = tj;
     fi = fj;
   }
-  PathSeries *returnSeries = new PathTimeSeries(this->getTag(), *theInt, *time, cFactor, useLast);
+  PathTimeSeries *returnSeries = new PathTimeSeries(this->getTag(), *theInt, *time, cFactor, useLast);
 
   delete theInt;
   if (returnSeries == 0) {
@@ -331,7 +331,7 @@ TimeSeries* PathTimeSeries::getIntegral()
 TimeSeries* PathTimeSeries::getDerivative()
 {
   if (thePath == 0) return 0;
-  Vector* theDif = new Vector(thePath);
+  Vector* theDif = new Vector(thePath->Size());
   if (theDif == 0 || theDif->Size() != thePath->Size()) {
     opserr << "PathTimeSeries::getDerivative() Ran out of memory allocating Vector " << endln;
     if (theDif != 0) delete theDif;
@@ -350,7 +350,7 @@ TimeSeries* PathTimeSeries::getDerivative()
     (*theDif)[j] = f;
     Fi = Fj;
   }
-  PathSeries *returnSeries = new PathTimeSeries(this->getTag(), *theDif, *time, cFactor, useLast);
+  PathTimeSeries *returnSeries = new PathTimeSeries(this->getTag(), *theDif, *time, cFactor, useLast);
   delete theDif;
   if (returnSeries == 0) {
     opserr << "PathTimeSeries::getDerivative() Ran out of memory creating PathSeries\n";

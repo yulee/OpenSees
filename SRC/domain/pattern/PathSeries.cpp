@@ -348,7 +348,7 @@ PathSeries::getCopy(void) {
 TimeSeries* PathSeries::getIntegral()
 {
   if (thePath == 0) return 0;
-  Vector* theInt = new Vector(thePath);
+  Vector* theInt = new Vector(thePath->Size());
   if (theInt == 0 || theInt->Size() != thePath->Size()) {
     opserr << "PathSeries::getIntegral() Ran out of memory allocating Vector " << endln;
     if (theInt != 0) delete theInt;
@@ -377,7 +377,7 @@ TimeSeries* PathSeries::getIntegral()
 TimeSeries* PathSeries::getDerivative()
 {
   if (thePath == 0) return 0;
-  Vector* theDif = new Vector(thePath);
+  Vector* theDif = new Vector(thePath->Size());
   if (theDif == 0 || theDif->Size() != thePath->Size()) {
     opserr << "PathSeries::getDerivative() Ran out of memory allocating Vector " << endln;
     if (theDif != 0) delete theDif;
