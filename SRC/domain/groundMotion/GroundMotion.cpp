@@ -100,8 +100,14 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
   if (theDispSeries != 0 && theVelSeries == 0 ) 
     theVelSeries = theDispSeries->getDerivative();
 
-  if (theVelSeries != 0 && theAccelSeries == 0 ) 
+  if (theVelSeries != 0 && theAccelSeries == 0 ) {
     theAccelSeries = theVelSeries->getDerivative();
+    opserr<<theVelSeries->getDuration()<<" "<<theAccelSeries->getDuration()<<"\n";
+    opserr<<theVelSeries->getFactor(0.0)<<" "<<theAccelSeries->getFactor(0.0)<<"\n";
+    opserr<<theVelSeries->getFactor(delta)<<" "<<theAccelSeries->getFactor(delta)<<"\n";
+    opserr<<theVelSeries->getFactor(2.0*delta)<<" "<<theAccelSeries->getFactor(2.0*delta)<<"\n";
+    opserr<<theVelSeries->getFactor(3.0*delta)<<" "<<theAccelSeries->getFactor(3.0*delta)<<"\n";
+  }
 }
 
 
