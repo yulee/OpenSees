@@ -292,7 +292,7 @@ GroundMotion::getPeakDisp(void)
     theVelSeries = theAccelSeries->getIntegral();
     if (theVelSeries != 0) {
 //      theDispSeries = this->integrate(theVelSeries, delta);
-      theDispSeries = integrate(theVelSeries->getIntegral();
+      theDispSeries = theVelSeries->getIntegral();
       if (theDispSeries != 0)
 	return fact*(theDispSeries->getPeakFactor());
       else
