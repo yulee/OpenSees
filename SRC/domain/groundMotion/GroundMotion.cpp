@@ -98,10 +98,10 @@ GroundMotion::GroundMotion(TimeSeries *dispSeries,
     theDispSeries = this->integrate(theVelSeries, delta);
 
   if (theDispSeries != 0 && theVelSeries == 0 ) 
-    theVelSeries = this->differentiate(theDispSeries, delta);
+    theVelSeries = theDispSeries->getDerivative();
 
   if (theVelSeries != 0 && theAccelSeries == 0 ) 
-    theAccelSeries = this->differentiate(theVelSeries, delta);
+    theAccelSeries = theVelSeries->getDerivative();
 }
 
 
