@@ -345,6 +345,64 @@ PathSeries::getCopy(void) {
 		return 0;
 }
 
+TimeSeries* PathSeries::getIntegral()
+{
+  if (thePath == 0) return 0;
+  Vector* theInt = new Vector(thePath)
+  if (theInt == 0 || theInt->Size() != thePath->Size()) {
+    opserr << "PathSeries::getIntegral() Ran out of memory allocating Vector " << endln;
+    if (theInt != 0) delete theInt;
+    return 0
+  }
+  double fi, fj;
+  double F;
+  fi = 0.0;
+  F = 0.0;
+  for (long long j = 0; j < thePath->Size(); j++) {
+    fj = (*thePath)[j];
+    F = F + 0.5 * pathTimeIncr * (fi + fj);
+    (*theInt)[j] = F;
+    fi = fj;
+  }
+  PathSeries *returnSeries = new PathSeries(this->getTag(), *theInt, pathTimeIncr, cFactor,
+                                            useLast, false, startTime);
+  delete theInt;
+  if (returnSeries == 0) {
+    opserr << "PathSeries::getIntegral() Ran out of memory creating PathSeries\n";
+    return 0;
+  }
+  return returnSeries;
+}
+
+TimeSeries* PathSeries::getDerivative()
+{
+  if (thePath == 0) return 0;
+  Vector* theDif = new Vector(thePath)
+  if (theDif == 0 || theDif->Size() != thePath->Size()) {
+    opserr << "PathSeries::getDerivative() Ran out of memory allocating Vector " << endln;
+    if (theDif != 0) delete theDif;
+    return 0
+  }
+  double Fi, Fj;
+  double f;
+  Fi = 0.0;
+  f = 0.0;
+  for (long long j = 0; j < thePath->Size(); j++) {
+    Fj = (*thePath)[j];
+    f = 2.0 * (Fj - Fi) / pathTimeIncr - f;
+    (*theDif)[j] = f;
+    Fi = Fj;
+  }
+  PathSeries *returnSeries = new PathSeries(this->getTag(), *theDif, pathTimeIncr, cFactor,
+                                            useLast, false, startTime);
+  delete theDif;
+  if (returnSeries == 0) {
+    opserr << "PathSeries::getDerivative() Ran out of memory creating PathSeries\n";
+    return 0;
+  }
+  return returnSeries;
+}
+
 double
 PathSeries::getFactor(double pseudoTime)
 {

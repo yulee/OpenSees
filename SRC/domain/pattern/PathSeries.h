@@ -70,6 +70,8 @@ class PathSeries : public TimeSeries
     double getPeakFactor ();
     double getTimeIncr (double pseudoTime) {return pathTimeIncr;}
     double getStartTime() ;
+    TimeSeries* getIntegral();
+    TimeSeries* getDerivative();
     
     // methods for output
     int sendSelf(int commitTag, Channel &theChannel);
