@@ -26,6 +26,7 @@
 #include <Element.h>
 #include <ElementParameter.h>
 #include <ElementStateParameter.h>
+#include <Damping.h>
 #include <LoadFactorParameter.h>
 #include <NodeResponseParameter.h>
 #include <OPS_Stream.h>
@@ -123,6 +124,7 @@ int OPS_Parameter() {
   Element *element = 0;
   LoadPattern *pattern = 0;
   RandomVariable *theRV = 0;
+  Damping *damping = 0;
   DomainComponent *theObject = 0;
   std::vector<const char *> argv;
 
@@ -196,6 +198,29 @@ int OPS_Parameter() {
         return -1;
       }
       theObject = (DomainComponent *)element;
+
+    } else if (strcmp(type, "damping") == 0) {
+      // damping object
+      if (OPS_GetNumRemainingInputArgs() == 0) {
+        opserr << "WARNING: need damping tag\n";
+        return -1;
+      }
+      if (theObject != 0) {
+        opserr << "WARNING: another object is already set\n";
+        return -1;
+      }
+      int tag;
+      if (OPS_GetIntInput(&num, &tag) < 0) {
+        opserr << "WARNING parameter -- invalid damping tag\n";
+        return -1;
+      }
+
+      element = theDomain->getDamping(tag);
+      if (damping == 0) {
+        opserr << "WARNING: damping " << tag << " not exists\n";
+        return -1;
+      }
+      theObject = (DomainComponent *)damping;
 
     } else if (strcmp(type, "randomVariable") == 0) {
 #ifdef _RELIABILITY
