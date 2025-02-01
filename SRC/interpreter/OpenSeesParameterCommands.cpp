@@ -122,7 +122,7 @@ int OPS_Parameter() {
   // loop through all other parameters
   Node *node = 0;
   Element *element = 0;
-  Region *region = 0;
+  MeshRegion *region = 0;
   LoadPattern *pattern = 0;
   RandomVariable *theRV = 0;
   DomainComponent *theObject = 0;
