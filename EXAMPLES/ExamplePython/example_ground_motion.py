@@ -16,7 +16,7 @@ ops.node(2, 0.0); ops.mass(2, 1.0)
 ops.uniaxialMaterial('Elastic', 1, 1000.0)
 ops.damping('Uniform', 1, 0.05, 1.0, 100.0)
 ops.element('zeroLength', 1, 1, 2, '-mat', 1, '-dir', 1, '-damp', 1)
-ops.timeSeries('Sine', 1, 0.0, 100.0, 0.2*math.pi, '-factor', 0.01)
+ops.timeSeries('Sine', 1, 0.0, 100.0, 0.2*math.pi, '-factor', -0.01)
 ops.pattern('UniformExcitation', 1, 1, '-accel', 1)
 ops.analysis('Transient')
 ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 2, '-dof', 1, 'disp')
@@ -34,7 +34,7 @@ time = data[:, 0]
 disp = data[:, 1]
 
 plt.figure()
-plt.plot(time, disp, label="disp", linestyle='--', lw=2)
+plt.plot(time, disp, label="disp", lw=2)
 plt.xlabel("Time")
 plt.ylabel("Displacement")
 # plt.title("Comparison of Displacement for All Cases")
