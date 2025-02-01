@@ -33,7 +33,7 @@ disp = data[:, 1]
 
 plt.figure()
 plt.plot(time, disp)
-plt.annotate('damping updated', xy=(10.0, 1.0), xytext=(10, 1.5), ha='right', arrowprops=dict(facecolor='black', width=0.1, shrink=0.05))
+plt.annotate('damping updated', xy=(10.0, 0.8), xytext=(10, 1.6), ha='right', arrowprops=dict(facecolor='black', width=0.1, headwidth=0.3, shrink=0.05))
 plt.xlabel("Time")
 plt.ylabel("Displacement")
 plt.grid()
