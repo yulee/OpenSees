@@ -30,7 +30,7 @@ ops.wipe()
 data = np.loadtxt('disp.out')
 plt.figure()
 plt.plot(data[:, 0], data[:, 1])
-plt.annotate('damping updated', xy=(10.0, 0.8), xytext=(10, 1.6),
+plt.annotate('damping updated', xy=(10.0, 0.8), xytext=(10, 1.6), ha='center',
              arrowprops=dict(facecolor='black', arrowstyle='-|>'))
 plt.xlabel('Time')
 plt.ylabel('Displacement')
