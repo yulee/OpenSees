@@ -1679,13 +1679,15 @@ ZeroLength::setParameter(const char **argv, int argc, Parameter &param)
 
   // damping
   if (strstr(argv[0], "damp") != 0) {
+
     if (argc < 2)
       return -1;
+
     return theDamping->setParameter(&argv[1], argc-1, param);
   }
 
   // specific material
-  if (strstr(argv[0], "material") != 0)) {
+  if (strstr(argv[0], "material") != 0) {
 
     if (argc < 3)
       return -1;
