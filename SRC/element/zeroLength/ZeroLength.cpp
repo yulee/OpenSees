@@ -1677,24 +1677,27 @@ ZeroLength::setParameter(const char **argv, int argc, Parameter &param)
   if (argc < 1)
     return -1;
 
-  if (strcmp(argv[0], "material") == 0) {
-      if (argc > 2) {
-	int matNum = atoi(argv[1]);
-	if (matNum >= 1 && matNum <= numMaterials1d)    
-	  return theMaterial1d[matNum-1]->setParameter(&argv[2], argc-2, param);
-      } else {
-	return -1;
-      }
+  // damping
+  if (strstr(argv[0], "damp") != 0) {
+    if (argc < 2)
+      return -1;
+    return theDamping->setParameter(&argv[1], argc-1, param);
   }
 
-  if (strcmp(argv[0], "damping") == 0) {
-      if (argc > 1) {
-	return theDamping->setParameter(&argv[1], argc-1, param);
-      } else {
-	return -1;
-      }
-  }
+  // specific material
+  if (strstr(argv[0], "material") != 0)) {
 
+    if (argc < 3)
+      return -1;
+
+    int matNum = atoi(argv[1]);
+    if (matNum >= 1 && matNum <= numMaterials1d)
+      return theMaterial1d[matNum-1]->setParameter(&argv[2], argc-2, param);
+    else
+      return -1;
+  } 
+
+  // Default, all materials
   for (int i=0; i<numMaterials1d; i++) {
     int res = theMaterial1d[i]->setParameter(argv, argc, param);
     if (res != -1) {
