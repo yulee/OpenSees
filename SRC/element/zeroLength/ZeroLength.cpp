@@ -1687,6 +1687,14 @@ ZeroLength::setParameter(const char **argv, int argc, Parameter &param)
       }
   }
 
+  if (strcmp(argv[0], "damping") == 0) {
+      if (argc > 1) {
+	return theDamping->setParameter(&argv[1], argc-1, param);
+      } else {
+	return -1;
+      }
+  }
+
   for (int i=0; i<numMaterials1d; i++) {
     int res = theMaterial1d[i]->setParameter(argv, argc, param);
     if (res != -1) {
