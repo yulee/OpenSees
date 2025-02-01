@@ -24,7 +24,7 @@ ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 2, '-dof', 1, 'disp'
 
 ops.analyze(1000, 0.01)
 ops.updateParameter(1, 0.02)
-ops.analyze(1000, 0.01)
+ops.analyze(2000, 0.01)
 
 ops.wipe()
 data = np.loadtxt('disp.out')
@@ -33,6 +33,7 @@ disp = data[:, 1]
 
 plt.figure()
 plt.plot(time, disp)
+plt.annotate('damping updated', xy=(10.0, 0.001), xytext=(10, 0.0015))
 plt.xlabel("Time")
 plt.ylabel("Displacement")
 plt.grid()
