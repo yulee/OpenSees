@@ -1855,6 +1855,8 @@ Brick::getResponse(int responseID, Information &eleInfo)
 int
 Brick::setParameter(const char **argv, int argc, Parameter &param)
 {
+  int res = -1;
+
   if (argc < 1)
     return -1;
 
@@ -1864,7 +1866,12 @@ Brick::setParameter(const char **argv, int argc, Parameter &param)
     if (argc < 2 || !theDamping)
       return -1;
 
-    return theDamping->setParameter(&argv[1], argc-1, param);
+    for (int i=0; i<4; i++) {
+      int dmpRes =  theDamping[i]->setParameter(argv, argc, param);
+      if (dmpRes != -1)
+        res = dmpRes;
+    }
+    return res;
   }
 
   // specific material point
@@ -1881,7 +1888,6 @@ Brick::setParameter(const char **argv, int argc, Parameter &param)
   }
   
   // all material points
-  int res = -1;
   for (int i=0; i<8; i++) {
     int matRes =  materialPointers[i]->setParameter(argv, argc, param);
     if (matRes != -1)
