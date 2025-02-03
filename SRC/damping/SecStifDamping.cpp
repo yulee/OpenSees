@@ -37,6 +37,8 @@
 #include <Matrix.h>
 #include <Domain.h>
 #include <Channel.h>
+#include <Information.h>
+#include <Parameter.h>
 #include <elementAPI.h>
 #include <SecStifDamping.h>
 #include <FEM_ObjectBroker.h>
