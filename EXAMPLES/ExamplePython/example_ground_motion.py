@@ -22,7 +22,7 @@ ops.parameter(1, 'region', 1, 'damping', 'dampingRatio')
 ops.timeSeries('Sine', 1, 0.0, 100.0, 0.628, '-factor', -10.0)
 ops.pattern('UniformExcitation', 1, 1, '-accel', 1)
 ops.analysis('Transient')
-ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 2, '-dof', 1, 'disp')
+ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 3, '-dof', 1, 'disp')
 
 ops.analyze(1000, 0.01)
 ops.updateParameter(1, 0.02)
