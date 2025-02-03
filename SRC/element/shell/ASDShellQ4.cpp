@@ -1834,11 +1834,11 @@ int ASDShellQ4::setParameter(const char** argv, int argc, Parameter& param)
     // damping
     if (strstr(argv[0], "damp") != 0) {
 
-        if (argc < 2 || !theDamping)
+        if (argc < 2 || !m_damping)
             return -1;
 
         for (int i=0; i<4; i++) {
-            int dmpRes =  theDamping[i]->setParameter(argv, argc, param);
+            int dmpRes =  m_damping[i]->setParameter(argv, argc, param);
             if (dmpRes != -1)
                 res = dmpRes;
         }
