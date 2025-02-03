@@ -1672,15 +1672,13 @@ ZeroLength::getResponse(int responseID, Information &eleInformation)
 int
 ZeroLength::setParameter(const char **argv, int argc, Parameter &param)
 {
-  int result = -1;  
-
   if (argc < 1)
     return -1;
 
   // damping
   if (strstr(argv[0], "damp") != 0) {
 
-    if (argc < 2)
+    if (argc < 2 || !theDamping)
       return -1;
 
     return theDamping->setParameter(&argv[1], argc-1, param);
@@ -1699,12 +1697,12 @@ ZeroLength::setParameter(const char **argv, int argc, Parameter &param)
       return -1;
   } 
 
-  // Default, all materials
+  // all materials
+  int result = -1;  
   for (int i=0; i<numMaterials1d; i++) {
     int res = theMaterial1d[i]->setParameter(argv, argc, param);
-    if (res != -1) {
+    if (res != -1)
       result = res;
-    }
   }  
   return result;
 }
