@@ -41,8 +41,8 @@ jobs:
           cmake --build . --target OpenSees -j8
           cmake --build . --target OpenSeesPy -j8
           mv lib/OpenSeesPy.so lib/opensees.so
-      - name: Valgrind checks
-        uses: “Ximaz/valgrind-action@v1.2.0”
+      - name: Valgrind Checker
+        uses: Ximaz/valgrind-action@1.2.1
         with:
             binary_path: ""
       - name: Verification OpenSeesPySP   # Simple Sanity Test
