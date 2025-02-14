@@ -42,6 +42,7 @@ jobs:
           cmake --build . --target OpenSeesPy -j8
           mv lib/OpenSeesPy.so lib/opensees.so
       - name: Verification OpenSeesPySP   # Simple Sanity Test
+        uses: “Ximaz/valgrind-action@v1.2.0”
         run: |
           export PYTHONPATH="./build/lib/"
           python3 -c "import sys; print(sys.path)"
