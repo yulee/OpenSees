@@ -49,7 +49,8 @@ jobs:
       - name: Valgrind Checker
         uses: Ximaz/valgrind-action@1.2.1
         with:
-            binary_path: "python3 ./EXAMPLES/ExamplePython/example_ground_motion.py"
+            binary_path: "python3"
+            binary_args: "./EXAMPLES/ExamplePython/example_ground_motion.py"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
