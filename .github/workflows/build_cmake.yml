@@ -46,7 +46,7 @@ jobs:
 #          cp /opt/hostedtoolcache/Python/3.11.11/x64/bin/python3 ./
           export PYTHONPATH="./build/lib/"
 #          python3 -c "import sys; print(sys.path)"
-#          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Valgrind Checker
         uses: Ximaz/valgrind-action@1.2.1
         with:
