@@ -41,15 +41,16 @@ jobs:
           cmake --build . --target OpenSees -j8
           cmake --build . --target OpenSeesPy -j8
           mv lib/OpenSeesPy.so lib/opensees.so
+          cp /opt/hostedtoolcache/Python/3.11.11/x64/bin/python3 ./
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
           export PYTHONPATH="./build/lib/"
-          python3 -c "import sys; print(sys.path)"
+          ./python3 -c "import sys; print(sys.path)"
 #          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Valgrind Checker
         uses: Ximaz/valgrind-action@1.2.1
         with:
-            binary_path: "/opt/hostedtoolcache/Python/3.11.11/x64/bin/python3"
+            binary_path: "./python3"
             binary_args: "./EXAMPLES/ExamplePython/example_ground_motion.py"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
