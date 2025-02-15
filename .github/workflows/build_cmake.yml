@@ -46,7 +46,8 @@ jobs:
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
           export PYTHONPATH="./build/lib/"
-          ./python3 -c "import sys; print(sys.path)"
+          pwd
+          /home/runner/work/OpenSees/OpenSees/build/python3 -c "import sys; print(sys.path)"
 #          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Valgrind Checker
         uses: Ximaz/valgrind-action@1.2.1
