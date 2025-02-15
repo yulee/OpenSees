@@ -32,6 +32,8 @@ jobs:
         run: pip install numpy
       - name: scipy
         run: pip install scipy
+      - name: valgrind
+        run: sudo apt install -y valgrind
       - name: 2.4.2. Building the OpenSees Applications and Python module
         run: |
           mkdir build
@@ -43,17 +45,17 @@ jobs:
           mv lib/OpenSeesPy.so lib/opensees.so
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
-          cp /opt/hostedtoolcache/Python/3.11.11/x64/bin/python3 ./
+#          cp /opt/hostedtoolcache/Python/3.11.11/x64/bin/python3 ./
           export PYTHONPATH="./build/lib/"
-          ./python3 -c "import sys; print(sys.path)"
-#          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
-      - name: Valgrind Checker
-        uses: Ximaz/valgrind-action@1.2.1
-        with:
-            binary_path: "./python3"
-            binary_args: "./EXAMPLES/ExamplePython/example_ground_motion.py"
-            track_file_descriptors: false
-            treat_error_as_warning: true
+#          python3 -c "import sys; print(sys.path)"
+          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+#      - name: Valgrind Checker
+#        uses: Ximaz/valgrind-action@1.2.1
+#        with:
+#            binary_path: "./python3"
+#            binary_args: "./EXAMPLES/ExamplePython/example_ground_motion.py"
+#            track_file_descriptors: false
+#            treat_error_as_warning: true
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
