@@ -2,10 +2,10 @@ name: CMake Build
 
 on:
   push:
-    branches: [master]
+    branches: [constraint]
 
   pull_request:
-    branches: [master]
+    branches: [constraint]
 
   workflow_dispatch:
 
