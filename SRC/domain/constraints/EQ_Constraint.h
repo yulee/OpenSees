@@ -79,7 +79,7 @@ class EQ_Constraint : public DomainComponent
     virtual int applyConstraint(double pseudoTime);
     virtual bool isTimeVarying(void) const;
     virtual const Matrix &getConstraint(void);    
-    virtual const Vector &getConstrainedDOFsInitialDisplacement(void) const;
+    virtual double getConstrainedDOFsInitialDisplacement(void) const;
     virtual const Vector &getRetainedDOFsInitialDisplacement(void) const;
 
     // methods for output

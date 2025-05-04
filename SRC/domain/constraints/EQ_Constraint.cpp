@@ -76,14 +76,14 @@ int OPS_EquationConstraint()
         return -1;
     }
 
-    int rdf = numRemainingArgs / 3 - 1
-    ID rNodes(rdf)
-    ID rDOF(rdf)
+    int rdf = numRemainingArgs / 3 - 1;
+    ID rNodes(rdf);
+    ID rDOFs(rdf);
     
      // constraint matrix
     Matrix Ccr(1,rdf);
 
-    for(int i = 0; i < ndf; i++) {
+    for(int i = 0; i < rdf; i++) {
         int rNodei, rDOFi;
         if(OPS_GetIntInput(&numData, &rNodei)) {
             opserr<<"WARNING invalid rNodeTag inputs\n";
@@ -99,18 +99,18 @@ int OPS_EquationConstraint()
             return -1;
         }
         rNodes(i) = rNodei
-        rDOF(i) = rDOF;
+        rDOFs(i) = rDOF;
         Ccr(1,i) = -rci / cc;
     }
 
-    EQ_Constraint* theEQ = new EQ_Constraint(rNode,rDOF,Ccr,cNodes,cDOF);
-    if(theEP == 0) {
+    EQ_Constraint* theEQ = new EQ_Constraint(cNode,cDOF,Ccr,rNodes,rDOFs);
+    if(theEQ == 0) {
 	    opserr<<"WARNING: failed to create EQ_Constraint\n";
 	    return -1;
     }
     if(theDomain->addEQ_Constraint(theEQ) == false) {
 	    opserr<<"WARNING: failed to add EQ_Constraint to domain\n";
-	    delete theEP;
+	    delete theEQ;
 	    return -1;
     }
     return 0;
@@ -150,9 +150,9 @@ EQ_Constraint::EQ_Constraint(int nodeConstr, int constrainedDOF,
 
 
 // general constructor for ModelBuilder
-MP_Constraint::MP_Constraint(int nodeConstr, int constrainedDOF, Matrix &constr,
-    ID &nodeRetain, ID &retainedDOF)
-:DomainComponent(nextTag++, CNSTRNT_TAG_MP_Constraint), 
+EQ_Constraint::EQ_Constraint(int nodeConstr, int constrainedDOF, Matrix &constr,
+                                ID &nodeRetain, ID &retainedDOF)
+:DomainComponent(nextTag++, CNSTRNT_TAG_EQ_Constraint), 
 nodeRetained(0), nodeConstrained(nodeConstr), 
 constraint(0), constrDOF(constrainedDOF), retainDOF(0), initialized(false), dbTag1(0), dbTag2(0)
 {
@@ -215,8 +215,8 @@ void EQ_Constraint::setDomain(Domain* theDomain)
             Uc0 = Uc(cdof);
             initialized = true;
             const ID& idr = getRetainedDOFs();
-            for (int i = 0; i < nodeRetained.Size(); ++i) {
-                Node* theRetainedNode = theDomain->getNode(nodeRetained);
+            for (int i = 0; i < nodeRetained->Size(); ++i) {
+                Node* theRetainedNode = theDomain->getNode(nodeRetained[i]);
                 if (theRetainedNode == 0) {
                     opserr << "FATAL EQ_Constraint::setDomain() - Constrained or Retained";
                     opserr << " Node does not exist in Domain\n";
@@ -259,7 +259,7 @@ EQ_Constraint::getNodeConstrained(void) const
 }
 
 
-const ID &
+int
 EQ_Constraint::getConstrainedDOFs(void) const
 {
     // return the ID corresponding to constrained DOF of Ccr
@@ -306,7 +306,7 @@ EQ_Constraint::getConstraint(void)
     return *constraint;    
 }
 
-const Vector& EQ_Constraint::getConstrainedDOFsInitialDisplacement(void) const
+double EQ_Constraint::getConstrainedDOFsInitialDisplacement(void) const
 {
     return Uc0;
 }
