@@ -85,7 +85,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
     else
 	    opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n"; 
 
-    const ID &nodeRetained = theEQ->getNodeRetained()
+    const ID &nodeRetained = theEQ->getNodeRetained();
     theRetainedNode = new Node*[nodeRetained.Size()];
     for (int i = 0; i < nodeRetained.Size(); ++i) {
         theRetainedNode[i] = theDomain.getNode(nodeRetained(i));
