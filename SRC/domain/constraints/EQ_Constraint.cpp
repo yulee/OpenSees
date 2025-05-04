@@ -99,7 +99,7 @@ int OPS_EquationConstraint()
             return -1;
         }
         rNode(i) = rNodei;
-        rDOF(i) = rDOF;
+        rDOF(i) = rDOFi;
         Ccr(1,i) = -rci / cc;
     }
 
@@ -216,7 +216,7 @@ void EQ_Constraint::setDomain(Domain* theDomain)
             initialized = true;
             const ID& idr = getRetainedDOFs();
             for (int i = 0; i < nodeRetained->Size(); ++i) {
-                Node* theRetainedNode = theDomain->getNode(int(nodeRetained[i]));
+                Node* theRetainedNode = theDomain->getNode((*nodeRetained)(i));
                 if (theRetainedNode == 0) {
                     opserr << "FATAL EQ_Constraint::setDomain() - Constrained or Retained";
                     opserr << " Node does not exist in Domain\n";
