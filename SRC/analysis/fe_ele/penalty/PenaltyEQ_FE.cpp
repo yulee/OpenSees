@@ -70,7 +70,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
     theConstrainedNode = theDomain.getNode(theEQ->getNodeConstrained());
 
     if (theConstrainedNode == 0) {
-	    opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Constrained or Retained";
+	    opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Constrained";
 	    opserr << " Node does not exist in Domain\n";
 	    opserr << theEQ->getNodeConstrained() << endln;
 	    exit(-1);
@@ -90,7 +90,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
     for (int i = 0; i < nodeRetained.Size(); ++i) {
         theRetainedNode[i] = theDomain.getNode(nodeRetained(i));
         if (theRetainedNode[i] == 0) {
-            opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Constrained or Retained";
+            opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Retained";
             opserr << " Node does not exist in Domain\n";
             opserr << nodeRetained(i) << endln;
             exit(-1);
