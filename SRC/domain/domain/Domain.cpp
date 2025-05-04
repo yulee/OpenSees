@@ -795,9 +795,9 @@ Domain::addEQ_Constraint(EQ_Constraint *eqConstraint)
       return false;
     }
     
-    ID nodeRetained = eqConstraint->getNodeRetained();      
+    const ID& nodeRetained = eqConstraint->getNodeRetained();      
     for (int i = 0; i < nodeRetained.Size(); ++i) {
-      nodePtr = this->getNode(int(nodeRetained[i]));
+      nodePtr = this->getNode(nodeRetained(i));
       if (nodePtr == 0) {
         opserr << "Domain::addEQ_Constraint - cannot add as retained node with tag" <<
           nodeRetained << "does not exist in model\n"; 	
@@ -1311,6 +1311,27 @@ Domain::removeMP_Constraints(int nodeTag)
   this->domainChange();
     
   return sizeTags;
+}    
+
+
+EQ_Constraint *
+Domain::removeEQ_Constraint(int tag)
+{
+    // remove the object from the container        
+    TaggedObject *mc = theMPs->removeComponent(tag);
+    
+    // if not there return 0    
+    if (mc == 0) 
+	return 0;
+
+    // mark the domain as having changed    
+    this->domainChange();
+    
+    // perform a downward cast, set the objects domain pointer to 0
+    // and return the result of the cast        
+    EQ_Constraint *result = (EQ_Constraint *)mc;
+    // result->setDomain(0);
+    return result;
 }    
 
 
