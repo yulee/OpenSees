@@ -77,8 +77,8 @@ int OPS_EquationConstraint()
     }
 
     int rdf = numRemainingArgs / 3 - 1;
-    ID rNodes(rdf);
-    ID rDOFs(rdf);
+    ID rNode(rdf);
+    ID rDOF(rdf);
     
      // constraint matrix
     Matrix Ccr(1,rdf);
@@ -98,12 +98,12 @@ int OPS_EquationConstraint()
             opserr<<"WARNING invalid rcoef inputs\n";
             return -1;
         }
-        rNodes(i) = rNodei
-        rDOFs(i) = rDOF;
+        rNode(i) = rNodei;
+        rDOF(i) = rDOF;
         Ccr(1,i) = -rci / cc;
     }
 
-    EQ_Constraint* theEQ = new EQ_Constraint(cNode,cDOF,Ccr,rNodes,rDOFs);
+    EQ_Constraint* theEQ = new EQ_Constraint(cNode,cDOF,Ccr,rNode,rDOF);
     if(theEQ == 0) {
 	    opserr<<"WARNING: failed to create EQ_Constraint\n";
 	    return -1;
@@ -216,7 +216,7 @@ void EQ_Constraint::setDomain(Domain* theDomain)
             initialized = true;
             const ID& idr = getRetainedDOFs();
             for (int i = 0; i < nodeRetained->Size(); ++i) {
-                Node* theRetainedNode = theDomain->getNode(nodeRetained[i]);
+                Node* theRetainedNode = theDomain->getNode(int(nodeRetained[i]));
                 if (theRetainedNode == 0) {
                     opserr << "FATAL EQ_Constraint::setDomain() - Constrained or Retained";
                     opserr << " Node does not exist in Domain\n";
