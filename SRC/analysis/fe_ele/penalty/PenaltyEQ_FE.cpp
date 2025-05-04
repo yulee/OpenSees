@@ -61,10 +61,10 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
     C = new Matrix(1,size);
 
     if (tang == 0 || resid == 0 || C == 0 ||
-	tang->noCols() != size || C->noCols() != size || 
-	resid->Size() != size) {
-	opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - out of memory\n";
-	exit(-1);
+            tang->noCols() != size || C->noCols() != size || 
+            resid->Size() != size) {
+        opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - out of memory\n";
+        exit(-1);
     }
 	    
     theConstrainedNode = theDomain.getNode(theEQ->getNodeConstrained());
@@ -86,7 +86,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
 	    opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n"; 
 
     const ID &nodeRetained = theEQ->getNodeRetained()
-    theRetainedNode = new Node*[nodeRetained.Size()]
+    theRetainedNode = new Node*[nodeRetained.Size()];
     for (int i = 0; i < nodeRetained.Size(); ++i) {
         theRetainedNode[i] = theDomain.getNode(nodeRetained(i));
         if (theRetainedNode[i] == 0) {
@@ -94,7 +94,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
             opserr << " Node does not exist in Domain\n";
             opserr << nodeRetained(i) << endln;
             exit(-1);
-        }	
+        }
         dofGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
         if (dofGrpPtr != 0) 
             myDOF_Groups(i+1) = dofGrpPtr->getTag();	    
@@ -165,7 +165,7 @@ PenaltyEQ_FE::setID(void)
     myDOF_Groups(0) = theConstrainedNodesDOFs->getTag();
     
     // now determine the IDs for the retained dof's
-    const ID &nodeRetained = theEQ->getNodeRetained()
+    const ID &nodeRetained = theEQ->getNodeRetained();
     const ID &RetainedDOFs = theEQ->getRetainedDOFs();
     for (int i = 0; i < nodeRetained.Size(); ++i) {
         DOF_Group *theRetainedNodesDOFs = theRetainedNode[i]->getDOF_GroupPtr();
