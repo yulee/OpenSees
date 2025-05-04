@@ -796,8 +796,8 @@ Domain::addEQ_Constraint(EQ_Constraint *eqConstraint)
     }
     
     ID nodeRetained = eqConstraint->getNodeRetained();      
-    for (int i = 0; i < nodeRetained->Size(); ++i) {
-      nodePtr = this->getNode(int(nodeRetained[i]);
+    for (int i = 0; i < nodeRetained.Size(); ++i) {
+      nodePtr = this->getNode(int(nodeRetained[i]));
       if (nodePtr == 0) {
         opserr << "Domain::addEQ_Constraint - cannot add as retained node with tag" <<
           nodeRetained << "does not exist in model\n"; 	
