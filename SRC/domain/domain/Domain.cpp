@@ -180,7 +180,7 @@ Domain::Domain(int numNodes, int numElements, int numSPs, int numMPs, int numEQs
     theSP_Iter = new SingleDomSP_Iter(theSPs);
     thePC_Iter = new SingleDomPC_Iter(thePCs);
     theMP_Iter = new SingleDomMP_Iter(theMPs);
-    theEQ_Iter = new SingleDomMP_Iter(theEQs);
+    theEQ_Iter = new SingleDomEQ_Iter(theEQs);
     theLoadPatternIter = new LoadPatternIter(theLoadPatterns);
     allSP_Iter = new SingleDomAllSP_Iter(*this);
     theParamIter = new SingleDomParamIter(theParameters);
@@ -795,16 +795,17 @@ Domain::addEQ_Constraint(EQ_Constraint *eqConstraint)
       return false;
     }
     
-    int nodeRetained = eqConstraint->getNodeRetained();      
-    nodePtr = this->getNode(nodeRetained);
-    if (nodePtr == 0) {
-      opserr << "Domain::addEQ_Constraint - cannot add as retained node with tag" <<
-	nodeRetained << "does not exist in model\n"; 	
-      
-      return false;
-    }      
-    // MISSING CODE
-    //#endif
+    ID nodeRetained = eqConstraint->getNodeRetained();      
+    for (int i = 0; i < nodeRetained->Size(); ++i) {
+      nodePtr = this->getNode(int(nodeRetained[i]);
+      if (nodePtr == 0) {
+        opserr << "Domain::addEQ_Constraint - cannot add as retained node with tag" <<
+          nodeRetained << "does not exist in model\n"; 	
+        return false;
+      }      
+    }
+    
+//#endif
 
   // check that no other object with similar tag exists in model
   int tag = eqConstraint->getTag();
@@ -2935,7 +2936,7 @@ Domain::sendSelf(int cTag, Channel &theChannel)
 
   // first we send info about the current domain flag and the number of
   // elements, nodes, constraints and load patterns currently in the domain
-  int numEle, numNod, numSPs, numPCs, numMPs, numLPs, numParam;
+  int numEle, numNod, numSPs, numPCs, numMPs, numEQs, numLPs, numParam;
   numNod = theNodes->getNumComponents();
   numEle = theElements->getNumComponents();
   numSPs = theSPs->getNumComponents();
