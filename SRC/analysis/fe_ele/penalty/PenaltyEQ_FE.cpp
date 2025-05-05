@@ -243,6 +243,8 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
     resid->addMatrixVector(0.0, KK, UU, -1.0);
 
     opserr << "yhyh:\n";
+    opserr << "id1: " << id1 << "\n";
+    opserr << "id2: " << id2 << "\n";
     opserr << "size: " << size << "\n";
     opserr << "KK: " << KK << "\n";
     opserr << "UU: " << UU << "\n";
