@@ -239,12 +239,6 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
     const Matrix& KK = getTangent(theNewIntegrator);
     resid->addMatrixVector(0.0, KK, UU, -1.0);
 
-    opserr << "yhyh:\n";
-    opserr << "size: " << size << "\n";
-    opserr << "KK: " << KK << "\n";
-    opserr << "UU: " << UU << "\n";
-    opserr << "resid: " << *resid << "\n";
-
     // done
     return *resid;
 }
