@@ -51,7 +51,7 @@ jobs:
             name: OpenSees_Ubuntu
             path: |
               ./build/lib/ground_motion.png
-              ./disp.out
+#              ./disp.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
 #          run: |
