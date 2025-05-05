@@ -3034,6 +3034,7 @@ PythonWrapper::addOpenSeesCommands()
     addCommand("remove", &Py_ops_remove);
     addCommand("mass", &Py_ops_mass);
     addCommand("equalDOF", &Py_ops_equalDOF);
+    addCommand("equationConstraint", &Py_ops_equationConstraint);
     addCommand("nodeEigenvector", &Py_ops_nodeEigenvector);
     addCommand("getTime", &Py_ops_getTime);
     addCommand("setCreep", &Py_ops_setCreep);
