@@ -56,9 +56,6 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
 {
     int size = 1 + (theEQ->getRetainedDOFs()).Size();
 
-    opserr << "yhyh:\n";
-    opserr << "size: " << size << "\n";
-
     tang = new Matrix(size,size);
     resid = new Vector(size);
     C = new Matrix(1,size);
@@ -246,8 +243,10 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
     resid->addMatrixVector(0.0, KK, UU, -1.0);
 
     opserr << "yhyh:\n";
+    opserr << "size: " << size << "\n";
     opserr << "KK: " << KK << "\n";
     opserr << "UU: " << UU << "\n";
+    opserr << "resid: " << *resid << "\n";
 
     // done
     return *resid;
@@ -327,11 +326,6 @@ PenaltyEQ_FE::determineTangent(void)
     // workaround no longer required
     const Matrix &Cref = *C;
     tang->addMatrixTransposeProduct(0.0, Cref, Cref, alpha);
-
-    opserr << "yhyh:\n";
-    opserr << "Cref: " << Cref << "\n";
-    opserr << "tang: " << *tang << "\n";
-
 }
 
 
