@@ -30,8 +30,10 @@ jobs:
         run: pip install matplotlib
       - name: numpy
         run: pip install numpy
-      - name: scipy
-        run: pip install scipy
+      # - name: scipy
+      #   run: pip install scipy
+      - name: vfo
+        run: pip install vfo
       - name: 2.4.2. Building the OpenSees Applications and Python module
         run: |
           mkdir build
@@ -50,7 +52,8 @@ jobs:
         with:
             name: OpenSees_Ubuntu
             path: |
-              ./build/lib/ground_motion.png
+              ground_motion.png
+              model.png
 #              ./disp.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
