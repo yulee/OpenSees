@@ -70,8 +70,9 @@ int OPS_EquationConstraint()
         opserr<<"WARNING invalid cDOF inputs\n";
         return -1;
     }
-    double cc;
-    if (OPS_GetDouble(&numData, &cc)) {
+    cDOF--;
+    double cc = 0.0;
+    if (OPS_GetDouble(&numData, &cc) || cc == 0.0) {
         opserr<<"WARNING invalid ccoef inputs\n";
         return -1;
     }
@@ -99,7 +100,7 @@ int OPS_EquationConstraint()
             return -1;
         }
         rNode(i) = rNodei;
-        rDOF(i) = rDOFi;
+        rDOF(i) = rDOFi - 1;
         Ccr(1,i) = -rci / cc;
     }
 
