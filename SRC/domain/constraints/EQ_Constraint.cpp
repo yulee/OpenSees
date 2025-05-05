@@ -101,11 +101,11 @@ int OPS_EquationConstraint()
         }
         rNode(i) = rNodei;
         rDOF(i) = rDOFi - 1;
-        Ccr(1,i) = -rci / cc;
+        Ccr(0,i) = -rci / cc;
     }
 
     opserr << "yhyh:\n";
-    opserr << "rdf" << rdf << "\n";
+    opserr << "rdf " << rdf << "\n";
     opserr << "numRemainingArgs" << numRemainingArgs << "\n";
     opserr << "yhyh:" << Ccr;
 
