@@ -213,21 +213,18 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
 
     // get the solution vector [Uc Ur]
     static Vector UU;
-    const ID& id1 = theEQ->getConstrainedDOFs();
     const ID& id2 = theEQ->getRetainedDOFs();
-    int size = id1.Size() + id2.Size();
+    int size = 1 + id2.Size();
     UU.resize(size);
     const Vector& Uc = theConstrainedNode->getTrialDisp();
-    const Vector& Uc0 = theEQ->getConstrainedDOFsInitialDisplacement();
+    double Uc0 = theEQ->getConstrainedDOFsInitialDisplacement();
     const Vector& Ur0 = theEQ->getRetainedDOFsInitialDisplacement();
-    for (int i = 0; i < id1.Size(); ++i) {
-        int cdof = id1(i);
-        if (cdof < 0 || cdof >= Uc.Size()) {
-            opserr << "PenaltyEQ_FE::getResidual FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() << "]\n";
-            exit(-1);
-        }
-        UU(i) = Uc(cdof) - Uc0(i);
+    int cdof = theEQ->getConstrainedDOFs();
+    if (cdof < 0 || cdof >= Uc.Size()) {
+        opserr << "PenaltyEQ_FE::getResidual FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() << "]\n";
+        exit(-1);
     }
+    UU(0) = Uc(cdof) - Uc0;
     for (int i = 0; i < id2.Size(); ++i) {
         int rdof = id2(i);
         const Vector& Ur = theRetainedNode[i]->getTrialDisp();
@@ -235,7 +232,7 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
             opserr << "PenaltyEQ_FE::getResidual FATAL Error: Retained DOF " << rdof << " out of bounds [0-" << Ur.Size() << "]\n";
             exit(-1);
         }
-        UU(i+id1.Size()) = Ur(rdof) - Ur0(i);
+        UU(i+1) = Ur(rdof) - Ur0(i);
     }
 
     // compute residual
@@ -243,8 +240,6 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
     resid->addMatrixVector(0.0, KK, UU, -1.0);
 
     opserr << "yhyh:\n";
-    opserr << "id1: " << id1 << "\n";
-    opserr << "id2: " << id2 << "\n";
     opserr << "size: " << size << "\n";
     opserr << "KK: " << KK << "\n";
     opserr << "UU: " << UU << "\n";
