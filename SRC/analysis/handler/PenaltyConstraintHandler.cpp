@@ -44,6 +44,8 @@
 #include <SP_Constraint.h>
 #include <MP_ConstraintIter.h>
 #include <MP_Constraint.h>
+#include <EQ_ConstraintIter.h>
+#include <EQ_Constraint.h>
 #include <Integrator.h>
 #include <ID.h>
 #include <Subdomain.h>
