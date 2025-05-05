@@ -104,6 +104,9 @@ int OPS_EquationConstraint()
         Ccr(1,i) = -rci / cc;
     }
 
+    opserr << "yhyh:\n";
+    opserr << "rdf" << rdf << "\n";
+    opserr << "numRemainingArgs" << numRemainingArgs << "\n";
     opserr << "yhyh:" << Ccr;
 
     EQ_Constraint* theEQ = new EQ_Constraint(cNode,cDOF,Ccr,rNode,rDOF);
