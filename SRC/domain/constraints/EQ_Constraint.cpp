@@ -210,7 +210,7 @@ void EQ_Constraint::setDomain(Domain* theDomain)
             const Vector& Uc = theConstrainedNode->getTrialDisp();
             int cdof = getConstrainedDOFs();
             if (cdof < 0 || cdof >= Uc.Size()) {
-                opserr << "EQ_Constraint::setDomain FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() << "]\n";
+                opserr << "EQ_Constraint::setDomain FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() - 1 << "]\n";
                 exit(-1);
             }
             Uc0 = Uc(cdof);
@@ -227,7 +227,7 @@ void EQ_Constraint::setDomain(Domain* theDomain)
                 const Vector& Ur = theRetainedNode->getTrialDisp();
                 int rdof = idr(i);
                 if (rdof < 0 || rdof >= Ur.Size()) {
-                    opserr << "EQ_Constraint::setDomain FATAL Error: Retained DOF " << rdof << " out of bounds [0-" << Ur.Size() << "]\n";
+                    opserr << "EQ_Constraint::setDomain FATAL Error: Retained DOF " << rdof << " out of bounds [0-" << Ur.Size() - 1 << "]\n";
                     exit(-1);
                 }
                 Ur0(i) = Ur(rdof);
