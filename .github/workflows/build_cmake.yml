@@ -35,8 +35,8 @@ jobs:
         run: pip install numpy
       # - name: scipy
       #   run: pip install scipy
-      # - name: vfo
-      #   run: pip install vfo
+      - name: vfo
+        run: pip install vfo
       # - name: xvfb
       #   run: sudo apt-get install xvfb
       - name: 2.4.2. Building the OpenSees Applications and Python module
@@ -57,10 +57,6 @@ jobs:
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
           xvfb-run python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
-      # - name: Verification OpenSeesPySP   # Simple Sanity Test
-      #   run: |
-      #     export PYTHONPATH="./build/lib/:./mylib/"
-      #     xvfb-run -a python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       # - name: Run headless test
       #   uses: coactions/setup-xvfb@v1
       #   with:
@@ -70,22 +66,13 @@ jobs:
       #     export PYTHONPATH="./build/lib/:./mylib/"
       #     export PYVISTA_OFF_SCREEN=true
       #     xvfb-run python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
-      # - name: cleanup xvfb
-      #   run: |
-      #     xvfb_pids=`ps aux | grep tmp/xvfb-run | grep -v grep | awk '{print $2}'`
-      #     if [ "$xvfb_pids" != "" ]; then
-      #       echo "Killing the following xvfb processes: $xvfb_pids"
-      #       sudo kill $xvfb_pids
-      #     else
-      #       echo "No xvfb processes to kill"
-      #     fi
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
             name: OpenSees_Ubuntu
             path: |
               ground_motion.png
-#              model.png
+              model.png
 #              ./disp.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
