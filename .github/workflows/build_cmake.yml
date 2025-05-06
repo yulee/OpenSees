@@ -16,7 +16,7 @@ jobs:
   build-ubuntu:
     name: Build Ubuntu
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - name: 2.1. Obtaining OpenSees Source Code
         uses: actions/checkout@v4
