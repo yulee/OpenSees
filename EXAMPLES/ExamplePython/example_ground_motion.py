@@ -1,11 +1,11 @@
 # import sys
 # sys.path.insert(0, '../../SRC/interpreter/')
 # sys.path.insert(0, '../build/lib/')
-import openseespy.opensees as ops
+# import opensees as ops
 
 #######
 import matplotlib.pyplot as plt
-# import openseespy.opensees as ops
+import openseespy.opensees as ops
 import numpy as np
 import vfo.vfo as vfo
 
@@ -18,7 +18,7 @@ ops.node(4, 0.0);
 ops.uniaxialMaterial('Elastic', 1, 100.0)
 ops.element('zeroLength', 1, 1, 2, '-mat', 1, '-dir', 1)
 ops.element('zeroLength', 2, 1, 3, '-mat', 1, '-dir', 1)
-vfo.plot_model(filename='model.png')
+# vfo.plot_model(filename='model.png')
 ops.equationConstraint(4,1,-3.0,2,1,1.0,3,1,2.0)
 ops.timeSeries('Linear',1)
 ops.pattern('Plain',1,1)
