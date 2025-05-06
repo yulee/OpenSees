@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import openseespy.opensees as ops
 import numpy as np
@@ -48,15 +50,15 @@ ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 21, 31, '-dof', 1, '
 ops.analyze(10)
 ops.wipe()
 print('Analysis completed')
-# data = np.loadtxt('disp.out')
-# plt.figure()
-# plt.plot(data[:, 0], data[:, 1])
-# plt.plot(data[:, 0], data[:, 2])
-# plt.xlabel('Time')
-# plt.ylabel('Displacement')
-# plt.grid()
-# plt.show()
+data = np.loadtxt('disp.out')
+plt.figure()
+plt.plot(data[:, 0], data[:, 1])
+plt.plot(data[:, 0], data[:, 2])
+plt.xlabel('Time')
+plt.ylabel('Displacement')
+plt.grid()
+plt.show()
 
-# #######
-# plt.savefig('ground_motion.png')
-# print('Plot completed')
+#######
+plt.savefig('ground_motion.png')
+print('Plot completed')
