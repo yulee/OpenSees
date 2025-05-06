@@ -484,7 +484,7 @@ def plot_model(model="none",show_nodes="no",show_nodetags="no",show_eletags="no"
 	mesh_original, mesh_lines_original, vertices, nodeTags = _get_modelDisplay(nodeArray, elementArray, eleClassTags)
 
 	pl = pv.Plotter(off_screen=True)
-	pl.show(interactive_update=False)
+	# pl.show(interactive_update=False)
 	
 	if show_nodes == "yes":
 		point_size = 5.0
@@ -544,7 +544,7 @@ def plot_model(model="none",show_nodes="no",show_nodetags="no",show_eletags="no"
 	if filename is not None:
 		pl.screenshot(filename+".png") 
 		
-	pl.show()
+	# pl.show()
 
 
 
@@ -628,7 +628,7 @@ def plot_deformedshape(model="none",loadcase="none",scale=10,tstep=-1,overlap="n
 	# print("displacement_nodeArray = ", displacement_nodeArray)
 	
 	pl = pv.Plotter(off_screen=True)		
-	pl.show(interactive_update=False)
+	# pl.show(interactive_update=False)
 
 
 	if tstep == -1:
@@ -728,7 +728,7 @@ def plot_deformedshape(model="none",loadcase="none",scale=10,tstep=-1,overlap="n
 	# if node_tags=="yes":
 		# pl.add_point_labels(vertices, nodeTags, point_size=1,render_points_as_spheres=True, font_size=font_size ,shape_color="white", shape_opacity=0.2, render=True,always_visible=True)
 
-	pl.show()
+	# pl.show()
 
 
 def plot_modeshape(model="none",modenumber=1,scale=10,overlap="yes",contour="none",setview="3D", line_width=1, contourlimits=None, filename=None):
@@ -797,7 +797,7 @@ def plot_modeshape(model="none",modenumber=1,scale=10,overlap="yes",contour="non
 		Mode_nodeArray = this_Mode_nodeArray
 		
 	pl = pv.Plotter(off_screen=True)		
-	pl.show(interactive_update=False)
+	# pl.show(interactive_update=False)
 	
 	
 	# DeflectedNodeCoordArray = nodeArray[:,1:]+ scale*displacement_nodeArray[jj,:,:]
@@ -862,7 +862,7 @@ def plot_modeshape(model="none",modenumber=1,scale=10,overlap="yes",contour="non
 	point_size = 1
 	#font_size = 10
     
-	pl.show()
+	# pl.show()
 
 
 def animate_deformedshape(model="none",loadcase="none",scale=10,speedup=1,overlap="yes",contour="none",setview="3D",line_width=1,node_for_th=None, node_dof=1, moviename=None,gifname=None):
@@ -944,7 +944,7 @@ def animate_deformedshape(model="none",loadcase="none",scale=10,speedup=1,overla
 		
 
 	pl = pv.Plotter(off_screen=True)
-	pl.show(interactive_update=False)
+	# pl.show(interactive_update=False)
 	# pl.show(auto_close=False)
 	
 	
