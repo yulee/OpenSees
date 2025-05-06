@@ -1,7 +1,7 @@
 # import sys
 # sys.path.insert(0, '../../SRC/interpreter/')
 # sys.path.insert(0, '../build/lib/')
-import opensees as ops
+import openseespy.opensees as ops
 
 #######
 import matplotlib.pyplot as plt
