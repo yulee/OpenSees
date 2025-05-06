@@ -44,10 +44,7 @@ jobs:
           cmake --build . --target OpenSeesPy -j8
           cd lib
           mkdir openseespy
-          cd openseespy
-          mkdir opensees
-          cd ..
-          mv OpenSeesPy.so openseespy/opensees/opensees.so
+          mv OpenSeesPy.so openseespy/opensees.so
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
           export PYTHONPATH="./build/lib/"
