@@ -448,7 +448,8 @@ def plot_model(model="none",show_nodes="no",show_nodetags="no",show_eletags="no"
 		
 	"""
 		
-
+	print("yhyh: my vfo")
+	
 	# Check if their is an output database or not.
 	if model == "none":
 		print("No Model_ODB specified, trying to get data from the active model.")
