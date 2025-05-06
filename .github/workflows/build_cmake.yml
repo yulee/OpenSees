@@ -54,14 +54,17 @@ jobs:
       #   run: |
       #     export PYTHONPATH="./build/lib/"
       #     python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+      - name: Verification OpenSeesPySP   # Simple Sanity Test
+        run: |
+          xvfb-run python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       # - name: Verification OpenSeesPySP   # Simple Sanity Test
       #   run: |
       #     export PYTHONPATH="./build/lib/:./mylib/"
       #     xvfb-run -a python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
-      - name: Run headless test
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+      # - name: Run headless test
+      #   uses: coactions/setup-xvfb@v1
+      #   with:
+      #     run: python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       # - name: Verification OpenSeesPySP   # Simple Sanity Test
       #   run: |
       #     export PYTHONPATH="./build/lib/:./mylib/"
