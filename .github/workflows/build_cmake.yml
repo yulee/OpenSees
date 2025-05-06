@@ -45,10 +45,17 @@ jobs:
           cd lib
           mkdir openseespy
           mv OpenSeesPy.so openseespy/opensees.so
+      # - name: Verification OpenSeesPySP   # Simple Sanity Test
+      #   run: |
+      #     export PYTHONPATH="./build/lib/:./mylib/"
+      #     python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Verification OpenSeesPySP   # Simple Sanity Test
-        run: |
-          export PYTHONPATH="./build/lib/:./mylib/"
-          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+        uses: coactions/setup-xvfb@v1
+        with:
+            run: |
+              export PYTHONPATH="./build/lib/:./mylib/"
+              export PYVISTA_OFF_SCREEN=true
+              python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
