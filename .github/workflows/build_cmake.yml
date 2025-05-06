@@ -47,10 +47,14 @@ jobs:
           cd lib
           mkdir openseespy
           mv OpenSeesPy.so openseespy/opensees.so
+      # - name: Verification OpenSeesPySP   # Simple Sanity Test
+      #   run: |
+      #     export PYTHONPATH="./build/lib/"
+      #     python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       - name: Verification OpenSeesPySP   # Simple Sanity Test
         run: |
-          export PYTHONPATH="./build/lib/"
-          python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
+          export PYTHONPATH="./build/lib/:./mylib/"
+          xvfb-run -a python3 ./EXAMPLES/ExamplePython/example_ground_motion.py
       # - name: Verification OpenSeesPySP   # Simple Sanity Test
       #   run: |
       #     export PYTHONPATH="./build/lib/:./mylib/"
@@ -62,7 +66,7 @@ jobs:
             name: OpenSees_Ubuntu
             path: |
               ground_motion.png
-              model.png
+#              model.png
 #              ./disp.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
