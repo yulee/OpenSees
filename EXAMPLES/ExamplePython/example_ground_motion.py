@@ -3,8 +3,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import openseespy.opensees as ops
 import numpy as np
-import vfo.vfo as vfo
-# import utils.vfo.vfo as vfo
+# import vfo.vfo as vfo
+import utils.vfo.vfo as vfo
 
 ops.wipe()
 ops.model('basic', '-ndm', 2, '-ndf', 2)
