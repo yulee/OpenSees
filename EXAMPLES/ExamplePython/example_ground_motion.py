@@ -4,8 +4,8 @@ import utils.vfo.vfo as vfo
 ops.wipe()
 ops.model('basic', '-ndm', 2, '-ndf', 2)
 ops.node( 1, 0.0, 0.0)
-nrow = 4; nrow1 = nrow + 1
-ncol = 4; ncol1 = ncol + 1
+nrow = 7; nrow1 = nrow + 1
+ncol = 7; ncol1 = ncol + 1
 for i in range(1, nrow1):
     for j in range(1, ncol1):
         ops.node(i * 10 + j, j, i)
@@ -39,9 +39,8 @@ ops.pattern('Plain',1,1)
 ops.load(1, 10.0, 10.0)
 ops.constraints('Penalty', 1.0e6, 1.0e6)
 ops.analysis('Static')
-ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 21, 31, '-dof', 1, 'disp')
 ops.analyze(1)
 ops.wipe()
 
-vfo.plot_deformedshape(model="model01", loadcase="static", line_width = 5, filename = 'model')
+vfo.plot_deformedshape(model="model01", loadcase="static", overlap='yes', contour='x', line_width = 5, filename = 'model')
 
