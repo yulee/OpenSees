@@ -8,41 +8,36 @@ import utils.vfo.vfo as vfo
 ops.wipe()
 ops.model('basic', '-ndm', 2, '-ndf', 2)
 ops.node( 1, 0.0, 0.0)
-ops.node(11, 1.0, 1.0); ops.node(12, 2.0, 1.0); ops.node(13, 3.0, 1.0); ops.node(14, 4.0, 1.0);
-ops.node(21, 1.0, 2.0); ops.node(22, 2.0, 2.0); ops.node(23, 3.0, 2.0); ops.node(24, 4.0, 2.0);
-ops.node(31, 1.0, 3.0); ops.node(32, 2.0, 3.0); ops.node(33, 3.0, 3.0); ops.node(34, 4.0, 3.0);
-ops.node(41, 1.0, 4.0); ops.node(42, 2.0, 4.0); ops.node(43, 3.0, 4.0); ops.node(44, 4.0, 4.0);
+nrow = 4; nrow1 = nrow + 1
+ncol = 4; ncol1 = ncol + 1
+for i in range(1, nrow1):
+    for j in range(1, ncol1):
+        ops.node(i * 10 + j, j, i)
+
 ops.fix(22, 1, 1)
+
 ops.nDMaterial('ElasticIsotropic', 1, 1000.0, 0.0)
 ops.nDMaterial('ElasticIsotropic', 2, 10.0, 0.0)
-ops.element('quad', 11, 11, 12, 22, 21, 1.0, 'PlaneStress', 1)
-ops.element('quad', 12, 12, 13, 23, 22, 1.0, 'PlaneStress', 2)
-ops.element('quad', 13, 13, 14, 24, 23, 1.0, 'PlaneStress', 2)
-ops.element('quad', 21, 21, 22, 32, 31, 1.0, 'PlaneStress', 2)
-ops.element('quad', 22, 22, 23, 33, 32, 1.0, 'PlaneStress', 2)
-ops.element('quad', 23, 23, 24, 34, 33, 1.0, 'PlaneStress', 2)
-ops.element('quad', 31, 31, 32, 42, 41, 1.0, 'PlaneStress', 2)
-ops.element('quad', 32, 32, 33, 43, 42, 1.0, 'PlaneStress', 2)
-ops.element('quad', 33, 33, 34, 44, 43, 1.0, 'PlaneStress', 2)
 
-vfo.createODB(model="model01")
+for i in range(1, nrow):
+    for j in range(1, ncol):
+        i1 = i + 1; j1 = j + 1
+        ops.element('quad', i * 10 + j, i * 10 + j, i * 10 + j1, i1 * 10 + j1, i1 * 10 + j, 1.0, 'PlaneStress', 1 if i == 1 and j == 1 else 2)
+
+vfo.createODB(model="model01", loadcase="static")
 vfo.plot_model(model = "model01", line_width = 5, filename = 'model')
 
-ops.equationConstraint(14, 1, 1.0, 11, 1, -1.0, 1, 1, -1.0)
-ops.equationConstraint(24, 1, 1.0, 21, 1, -1.0, 1, 1, -1.0)
-ops.equationConstraint(34, 1, 1.0, 31, 1, -1.0, 1, 1, -1.0)
-ops.equationConstraint(44, 1, 1.0, 41, 1, -1.0, 1, 1, -1.0)
-ops.equationConstraint(41, 1, 1.0, 11, 1, -1.0)
-ops.equationConstraint(42, 1, 1.0, 12, 1, -1.0)
-ops.equationConstraint(43, 1, 1.0, 13, 1, -1.0)
+for i in range(1, nrow):
+    ops.equationConstraint(i * 10 + ncol, 1, 1.0, i * 10 + 1, 1, -1.0, 1, 1, -1.0)
+    ops.equationConstraint(i * 10 + ncol, 2, 1.0, i * 10 + 1, 2, -1.0)
 
-ops.equationConstraint(41, 2, 1.0, 11, 2, -1.0, 1, 2, -1.0)
-ops.equationConstraint(42, 2, 1.0, 12, 2, -1.0, 1, 2, -1.0)
-ops.equationConstraint(43, 2, 1.0, 13, 2, -1.0, 1, 2, -1.0)
-ops.equationConstraint(44, 2, 1.0, 14, 2, -1.0, 1, 2, -1.0)
-ops.equationConstraint(14, 2, 1.0, 11, 2, -1.0)
-ops.equationConstraint(24, 2, 1.0, 21, 2, -1.0)
-ops.equationConstraint(34, 2, 1.0, 31, 2, -1.0)
+ops.equationConstraint(nrow * 10 + ncol, 1, 1.0, nrow * 10 + 1, 1, -1.0, 1, 1, -1.0)
+
+for j in range(1, ncol):
+    ops.equationConstraint(nrow * 10 + j, 2, 1.0, 10 + j, 2, -1.0, 1, 2, -1.0)
+    ops.equationConstraint(nrow * 10 + j, 1, 1.0, 10 + j, 1, -1.0)
+
+ops.equationConstraint(nrow * 10 + ncol, 2, 1.0, 10 + ncol, 2, -1.0, 1, 2, -1.0)
 
 ops.timeSeries('Linear',1)
 ops.pattern('Plain',1,1)
