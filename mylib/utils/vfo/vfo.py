@@ -532,7 +532,7 @@ def plot_model(model="none",show_nodes="no",show_nodetags="no",show_eletags="no"
 	else:
 		pass
 	 
-	pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
+	# pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
 	
 	if show_nodetags=="yes":
 		pl.add_point_labels(vertices, nodeTags.astype(int), point_size=1,render_points_as_spheres=True, font_size=font_size ,shape_color="white", shape_opacity=0.2, render=True,always_visible=True)
@@ -702,7 +702,7 @@ def plot_deformedshape(model="none",loadcase="none",scale=10,tstep=-1,overlap="n
 		else:
 			pass
 
-	pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
+	# pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
 	
 	if singleStep is False:
 		slider = pl.add_slider_widget(_get_deformed_mesh, [0, timeSteps[-1]], value=timeSteps[jjj], title="time steps", title_opacity=0.5, title_color="red", fmt="%0.2f", title_height=0.008,)
@@ -854,7 +854,7 @@ def plot_modeshape(model="none",modenumber=1,scale=10,overlap="yes",contour="non
 		pass
 
 	pl.add_text("Mode = "+str(modenumber), color="black", font_size=12)
-	pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
+	# pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
 		
 	if filename is not None:
 		pl.screenshot(filename+".png") 
@@ -1065,7 +1065,7 @@ def animate_deformedshape(model="none",loadcase="none",scale=10,speedup=1,overla
 	
 	
 		text1 = pl.add_text("Time = "+str(tstep), color="black", font_size=12)
-		pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
+		# pl.add_text('VFO - Visualization for OpenSees', position='lower_left', color='green', font_size=6)
 		
 		try:
 			th_line.update(timeSteps[0:jj,], displacement_nodeArray[0:jj,50,1])
