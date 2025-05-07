@@ -12,7 +12,7 @@ for i in range(1, nrow1):
 
 ops.fix(22, 1, 1)
 ops.nDMaterial('ElasticIsotropic', 1, 1000.0, 0.0)
-ops.nDMaterial('ElasticIsotropic', 2, 100.0, 0.0)
+ops.nDMaterial('ElasticIsotropic', 2, 10.0, 0.0)
 
 for i in range(1, nrow):
     for j in range(1, ncol):
@@ -39,4 +39,4 @@ ops.constraints('Penalty', 1.0e6, 1.0e6)
 ops.analysis('Static')
 ops.analyze(1)
 ops.wipe()
-vfo.plot_deformedshape(model="model01", loadcase="static", contour='x', line_width = 5, filename = 'model')
+vfo.plot_deformedshape(model="model01", loadcase="static", scale=5, contour='x', line_width = 5, filename = 'model')
