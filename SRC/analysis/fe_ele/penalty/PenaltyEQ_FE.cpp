@@ -77,11 +77,9 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
         exit(-1);
     }
 
-    DOF_Group *dofGrpPtr = 0;
-
-    dofGrpPtr = theConstrainedNode->getDOF_GroupPtr();
-    if (dofGrpPtr != 0) 
-        myDOF_Groups(0) = dofGrpPtr->getTag();	        
+    DOF_Group *theConstrainedNodeDOFGrpPtr = theConstrainedNode->getDOF_GroupPtr();
+    if (theConstrainedNodeDOFGrpPtr != 0) 
+        myDOF_Groups(0) = theConstrainedNodeDOFGrpPtr->getTag();	        
     else
         opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n"; 
 
@@ -95,9 +93,9 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
             opserr << nodeRetained(i) << endln;
             exit(-1);
         }
-        dofGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
-        if (dofGrpPtr != 0) 
-            myDOF_Groups(i + 1) = dofGrpPtr->getTag();	    
+        DOF_Group *theRetainedNodeDOFGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
+        if (theRetainedNodeDOFGrpPtr != 0) 
+            myDOF_Groups(i + 1) = theRetainedNodeDOFGrpPtr->getTag();	    
         else 
             opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n";
     }
