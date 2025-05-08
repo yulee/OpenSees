@@ -296,19 +296,17 @@ void
 LagrangeEQ_FE::determineTangent(void)
 {
     const Vector &constraint = theEQ->getConstraint();
-    int noRows = 1;
     int size = constraint.Size();
-    int n = noRows+noCols;
     
     tang->Zero();    
 
-    (*tang)(n, 0) = -alpha;
-    (*tang)(0, n) = -alpha;	
+    (*tang)(size + 1, 0) = -alpha;
+    (*tang)(0, size + 1) = -alpha;	
     
     for (int i = 0; i < size; i++) {
         double val = constraint(i) * alpha;
-        (*tang)(n, i+size) = val;
-        (*tang)(size+i, n) = val;
+        (*tang)(size + 1, size + i) = val;
+        (*tang)(size + i, size + 1) = val;
     }
 }
 
