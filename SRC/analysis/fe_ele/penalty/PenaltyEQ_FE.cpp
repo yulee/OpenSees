@@ -297,7 +297,7 @@ PenaltyEQ_FE::determineTangent(void)
     int noRows = 1;
     int size = constraint.Size();
     
-    (*C)(0,0) = -1.0;
+    (*C)(0) = -1.0;
     
     for (int i = 0; i < size; i++)
         (*C)(i + 1) = constraint(i);

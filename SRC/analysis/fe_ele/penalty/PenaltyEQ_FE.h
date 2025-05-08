@@ -76,7 +76,7 @@ class PenaltyEQ_FE: public FE_Element
 
     Matrix *tang;
     Vector *resid;
-    Matrix *C;    // to hold the C matrix
+    Vector *C;
     double alpha;
 	
     
