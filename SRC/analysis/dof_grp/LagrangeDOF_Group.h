@@ -48,6 +48,7 @@ class LagrangeDOF_Group: public DOF_Group
   public:
     LagrangeDOF_Group(int tag, SP_Constraint &spPtr);    
     LagrangeDOF_Group(int tag, MP_Constraint &mpPtr);        
+    LagrangeDOF_Group(int tag, EQ_Constraint &eqPtr);        
     virtual ~LagrangeDOF_Group();    
 
     // methods to form the tangent
