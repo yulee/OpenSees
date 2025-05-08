@@ -207,8 +207,6 @@ PlainHandler::handle(const ID *nodesLast)
 		    opserr << " non-varyng assumed\n";
 		}
 		const Vector &C = eqPtr->getConstraint();
-		int numRows = C.noRows();
-		int numCols = C.noCols();
 		if (C.Size() > 1 || C(0) != 1.0) {
 			opserr << "WARNING PlainHandler::handle() - ";
 			opserr << " constraint matrix not identity, ignoring constraint";
