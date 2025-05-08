@@ -50,7 +50,8 @@
 
 PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain, 
 			   EQ_Constraint &TheEQ, double Alpha)
-:FE_Element(tag, 2, 1+(TheEQ.getRetainedDOFs()).Size()),
+:FE_Element(tag, 1+(TheEQ.getRetainedDOFs()).Size(),
+ 1+(TheEQ.getRetainedDOFs()).Size()),
  theEQ(&TheEQ), theConstrainedNode(0) , theRetainedNode(0),
  tang(0), resid(0), C(0), alpha(Alpha)
 {
@@ -66,24 +67,23 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
         opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - out of memory\n";
         exit(-1);
     }
-	    
+
     theConstrainedNode = theDomain.getNode(theEQ->getNodeConstrained());
 
     if (theConstrainedNode == 0) {
-	    opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Constrained";
-	    opserr << " Node does not exist in Domain\n";
-	    opserr << theEQ->getNodeConstrained() << endln;
-	    exit(-1);
+        opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - Constrained";
+        opserr << " Node does not exist in Domain\n";
+        opserr << theEQ->getNodeConstrained() << endln;
+        exit(-1);
     }
 
-    // set up the dof groups tags
     DOF_Group *dofGrpPtr = 0;
 
     dofGrpPtr = theConstrainedNode->getDOF_GroupPtr();
     if (dofGrpPtr != 0) 
-	    myDOF_Groups(0) = dofGrpPtr->getTag();	        
+        myDOF_Groups(0) = dofGrpPtr->getTag();	        
     else
-	    opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n"; 
+        opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n"; 
 
     const ID &nodeRetained = theEQ->getNodeRetained();
     theRetainedNode = new Node*[nodeRetained.Size()];
@@ -97,7 +97,7 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
         }
         dofGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
         if (dofGrpPtr != 0) 
-            myDOF_Groups(i+1) = dofGrpPtr->getTag();	    
+            myDOF_Groups(i + 1) = dofGrpPtr->getTag();	    
         else 
             opserr << "WARNING PenaltyEQ_FE::PenaltyEQ_FE() - node no Group yet?\n";
     }
@@ -131,43 +131,53 @@ PenaltyEQ_FE::setID(void)
     int result = 0;
 
     // first determine the IDs in myID for those DOFs marked
-    // as constrained DOFs, this is obtained from the DOF_Group
-    // associated with the constrained node
+    // as constrainedDOF DOFs, this is obtained from the DOF_Group
+    // associated with the constrainedDOF node
+    if (theConstrainedNode == 0) {
+        opserr << "WARNING PenaltyEQ_FE::setID(void)";
+        opserr << "- no asscoiated Constrained Node\n";
+        return -1;
+    }
     DOF_Group *theConstrainedNodesDOFs = theConstrainedNode->getDOF_GroupPtr();
     if (theConstrainedNodesDOFs == 0) {
         opserr << "WARNING PenaltyEQ_FE::setID(void)";
         opserr << " - no DOF_Group with Constrained Node\n";
         return -2;
     }    
-
     const ID &theConstrainedNodesID = theConstrainedNodesDOFs->getID();    
     
-    int constrained = theEQ->getConstrainedDOFs();
-    if (constrained < 0 || 
-        constrained >= theConstrainedNode->getNumberDOF()) {
-        
+    int constrainedDOF = theEQ->getConstrainedDOFs();
+    if (constrainedDOF < 0 || constrainedDOF >= theConstrainedNode->getNumberDOF()) {
         opserr << "WARNING PenaltyEQ_FE::setID(void) - unknown DOF ";
-        opserr << constrained << " at Node\n";
+        opserr << constrainedDOF << " at Node\n";
         myID(0) = -1; // modify so nothing will be added to equations
         result = -3;
     }    	
     else {
-        if (constrained >= theConstrainedNodesID.Size()) {
+        if (constrainedDOF >= theConstrainedNodesID.Size()) {
             opserr << "WARNING PenaltyEQ_FE::setID(void) - ";
             opserr << " Nodes DOF_Group too small\n";
             myID(0) = -1; // modify so nothing will be added to equations
             result = -4;
         }
         else
-            myID(0) = theConstrainedNodesID(constrained);
+            myID(0) = theConstrainedNodesID(constrainedDOF);
     }
-
-    myDOF_Groups(0) = theConstrainedNodesDOFs->getTag();
     
     // now determine the IDs for the retained dof's
+    if (theRetainedNode == 0) {
+        opserr << "WARNING PenaltyEQ_FE::setID(void)";
+        opserr << "- no asscoiated Retained Node\n";
+        return -1;
+    }
     const ID &nodeRetained = theEQ->getNodeRetained();
     const ID &RetainedDOFs = theEQ->getRetainedDOFs();
     for (int i = 0; i < nodeRetained.Size(); ++i) {
+        if (theRetainedNode[i] == 0) {
+            opserr << "WARNING PenaltyEQ_FE::setID(void)";
+            opserr << "- no asscoiated Retained Node\n";
+            return -1;
+        }
         DOF_Group *theRetainedNodesDOFs = theRetainedNode[i]->getDOF_GroupPtr();
         if (theRetainedNodesDOFs == 0) {
             opserr << "WARNING PenaltyEQ_FE::setID(void)";
@@ -179,20 +189,19 @@ PenaltyEQ_FE::setID(void)
         if (retained < 0 || retained >= theRetainedNode[i]->getNumberDOF()) {
             opserr << "WARNING PenaltyEQ_FE::setID(void) - unknown DOF ";
             opserr << retained << " at Node\n";
-            myID(i+1) = -1; // modify so nothing will be added
+            myID(i + 1) = -1; // modify so nothing will be added
             result = -3;
         }    	
         else {
             if (retained >= theRetainedNodesID.Size()) {
                 opserr << "WARNING PenaltyEQ_FE::setID(void) - ";
                 opserr << " Nodes DOF_Group too small\n";
-                myID(i+1) = -1; // modify so nothing will be added 
+                myID(i + 1) = -1; // modify so nothing will be added 
                 result = -4;
             }
             else
-               myID(i+1) = theRetainedNodesID(retained);
+               myID(i + 1) = theRetainedNodesID(retained);
         }
-        myDOF_Groups(i+1) = theRetainedNodesDOFs->getTag();
     }
 
     return result;
@@ -213,26 +222,27 @@ PenaltyEQ_FE::getResidual(Integrator *theNewIntegrator)
 
     // get the solution vector [Uc Ur]
     static Vector UU;
-    const ID& id2 = theEQ->getRetainedDOFs();
-    int size = 1 + id2.Size();
+    const ID &RetainedDOFs = theEQ->getRetainedDOFs();
+    int size = 1 + RetainedDOFs.Size();
     UU.resize(size);
     const Vector& Uc = theConstrainedNode->getTrialDisp();
     double Uc0 = theEQ->getConstrainedDOFsInitialDisplacement();
-    const Vector& Ur0 = theEQ->getRetainedDOFsInitialDisplacement();
     int cdof = theEQ->getConstrainedDOFs();
     if (cdof < 0 || cdof >= Uc.Size()) {
-        opserr << "PenaltyEQ_FE::getResidual FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() << "]\n";
+        opserr << "PenaltyEQ_FE::getResidual FATAL Error: Constrained DOF " << cdof << " out of bounds [0-" << Uc.Size() - 1 << "]\n";
         exit(-1);
     }
     UU(0) = Uc(cdof) - Uc0;
-    for (int i = 0; i < id2.Size(); ++i) {
-        int rdof = id2(i);
+
+    const Vector& Ur0 = theEQ->getRetainedDOFsInitialDisplacement();
+    for (int i = 0; i < RetainedDOFs.Size(); ++i) {
+        int rdof = RetainedDOFs(i);
         const Vector& Ur = theRetainedNode[i]->getTrialDisp();
         if (rdof < 0 || rdof >= Ur.Size()) {
-            opserr << "PenaltyEQ_FE::getResidual FATAL Error: Retained DOF " << rdof << " out of bounds [0-" << Ur.Size() << "]\n";
+            opserr << "PenaltyEQ_FE::getResidual FATAL Error: Retained DOF " << rdof << " out of bounds [0-" << Ur.Size() - 1 << "]\n";
             exit(-1);
         }
-        UU(i+1) = Ur(rdof) - Ur0(i);
+        UU(i + 1) = Ur(rdof) - Ur0(i);
     }
 
     // compute residual
@@ -290,31 +300,13 @@ PenaltyEQ_FE::determineTangent(void)
     int noCols = constraint.noCols();
     
     for (int j=0; j<noRows; j++)
-	(*C)(j,j) = -1.0;
+	    (*C)(j,j) = -1.0;
     
     for (int i=0; i<noRows; i++)
-	for (int j=0; j<noCols; j++)
-	    (*C)(i,j+noRows) = constraint(i,j);
+	    for (int j=0; j<noCols; j++)
+	        (*C)(i,j+noRows) = constraint(i,j);
     
-
     // now form the tangent: [K] = alpha * [C]^t[C]
-    // *(tang) = (*C)^(*C);
-    // *(tang) *= alpha;
-    /*
-	// THIS IS A WORKAROUND UNTIL WE GET addMatrixTransposeProduct() IN
-	// THE Matrix CLASS OR UNROLL THIS COMPUTATION
-	int rows = C->noRows();
-	int cols = C->noCols();
-	Matrix CT(cols,rows);
-	const Matrix &Cref = *C;
-	// Fill in the transpose of C
-	for (int k = 0; k < cols; k++)
-		for (int l = 0; l < rows; l++)
-			CT(k,l) = Cref(l,k);
-	// Compute alpha*(C^*C)
-	tang->addMatrixProduct(0.0, CT, Cref, alpha);
-    */
-    // workaround no longer required
     const Matrix &Cref = *C;
     tang->addMatrixTransposeProduct(0.0, Cref, Cref, alpha);
 }
