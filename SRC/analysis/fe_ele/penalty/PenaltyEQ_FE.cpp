@@ -293,20 +293,18 @@ PenaltyEQ_FE::determineTangent(void)
 {
     // first determine [C] = [-I [Ccr]]
     C->Zero();
-    const Matrix &constraint = theEQ->getConstraint();
-    int noRows = constraint.noRows();
-    int noCols = constraint.noCols();
+    const Vector &constraint = theEQ->getConstraint();
+    int noRows = 1;
+    int size = constraint.Size();
     
-    for (int j=0; j<noRows; j++)
-	    (*C)(j,j) = -1.0;
+    (*C)(0,0) = -1.0;
     
-    for (int i=0; i<noRows; i++)
-	    for (int j=0; j<noCols; j++)
-	        (*C)(i,j+noRows) = constraint(i,j);
+    for (int i = 0; i < size; i++)
+        (*C)(i + 1) = constraint(i);
     
     // now form the tangent: [K] = alpha * [C]^t[C]
-    const Matrix &Cref = *C;
-    tang->addMatrixTransposeProduct(0.0, Cref, Cref, alpha);
+    const Vector &Cref = *C;
+    *tang = Cref % Cref;
 }
 
 
