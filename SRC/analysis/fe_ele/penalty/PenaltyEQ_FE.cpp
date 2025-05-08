@@ -59,10 +59,10 @@ PenaltyEQ_FE::PenaltyEQ_FE(int tag, Domain &theDomain,
 
     tang = new Matrix(size,size);
     resid = new Vector(size);
-    C = new Matrix(1,size);
+    C = new Vector(size);
 
     if (tang == 0 || resid == 0 || C == 0 ||
-            tang->noCols() != size || C->noCols() != size || 
+            tang->noCols() != size || C->Size() != size || 
             resid->Size() != size) {
         opserr << "FATAL PenaltyEQ_FE::PenaltyEQ_FE() - out of memory\n";
         exit(-1);
