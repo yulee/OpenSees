@@ -81,7 +81,7 @@ int OPS_EquationConstraint()
     ID rNode(rdf);
     ID rDOF(rdf);
     
-     // constraint matrix
+     // constraint vector
     Vector Ccr(rdf);
 
     for(int i = 0; i < rdf; i++) {
@@ -493,10 +493,11 @@ EQ_Constraint::Print(OPS_Stream &s, int flag)
 {     
     s << "EQ_Constraint: " << this->getTag() << "\n";
     s << "Constrained Node: " << nodeConstrained << "at DOF: " << constrDOF + 1 << "\n";
-    for (int i = 0; i < (*nodeRetained).Size(); i++)
-        s << "Retained Node: " << (*nodeRetained)(i) << "at DOF: " << (*retainDOF)(i) + 1 << "\n";
-    if (constraint != 0)
-        s << " constraint vector: " << *constraint << "\n";
+    if (nodeRetained != 0 && retainDOF != 0)
+        for (int i = 0; i < (*nodeRetained).Size(); i++)
+            s << "Retained Node: " << (*nodeRetained)(i) << "at DOF: " << (*retainDOF)(i) + 1 << "\n";
+    if (constraint != 0) {
+        s << " Constraint vector: " << *constraint << "\n";
     }
 }
 
