@@ -167,7 +167,7 @@ constraint(0), constrDOF(constrainedDOF), retainDOF(0), initialized(false), dbTa
     }    
     
     constraint = new Vector(constr);
-    if (constraint == 0 || constraint.Size() != constr.Size()) { 
+    if (constraint == 0 || constraint->Size() != constr.Size()) { 
         opserr << "MP_Constraint::MP_Constraint - ran out of memory 2\n";
         exit(-1);
     }        
