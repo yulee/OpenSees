@@ -61,7 +61,7 @@ class EQ_Constraint : public DomainComponent
 
     EQ_Constraint(int nodeConstr, 
 		  int constrainedDOF,
-		  Matrix &constrnt,
+		  Vector &constrnt,
       ID &nodeRetain,
     	ID &retainedDOF);
 
@@ -72,13 +72,13 @@ class EQ_Constraint : public DomainComponent
     void setDomain(Domain* theDomain);
 
     // method to get information about the constraint
-    virtual const ID &getNodeRetained(void) const;
     virtual int getNodeConstrained(void) const;    
     virtual int getConstrainedDOFs(void) const;        
+    virtual const ID &getNodeRetained(void) const;
     virtual const ID &getRetainedDOFs(void) const;            
     virtual int applyConstraint(double pseudoTime);
     virtual bool isTimeVarying(void) const;
-    virtual const Matrix &getConstraint(void);    
+    virtual const Vector &getConstraint(void);    
     virtual double getConstrainedDOFsInitialDisplacement(void) const;
     virtual const Vector &getRetainedDOFsInitialDisplacement(void) const;
 
@@ -92,11 +92,11 @@ class EQ_Constraint : public DomainComponent
   protected:
     
   private:
-    ID *nodeRetained;        // to identify the retained node
     int nodeConstrained;     // to identify  the constrained node
-    Matrix *constraint;      // pointer to the constraint matrix
     int constrDOF;           // ID of constrained DOF at constrained node
+    ID *nodeRetained;        // to identify the retained node
     ID *retainDOF;           // ID of related DOF at retained node
+    Vector *constraint;      // pointer to the constraint matrix
     double Uc0;              // initial displacement at constrained DOFs (same size as constrDOF)
     Vector Ur0;              // initial displacement at retained node  (same size as retainDOF)
     bool initialized;        // a flag to avoid recomputing the intial values in setDomain if already initialized

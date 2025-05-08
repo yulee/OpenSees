@@ -35,7 +35,7 @@
 #include <EQ_Constraint.h>
 
 #include <stdlib.h>
-#include <Matrix.h>
+#include <Vector.h>
 #include <ID.h>
 #include <Channel.h>
 #include <FEM_ObjectBroker.h>
@@ -82,7 +82,7 @@ int OPS_EquationConstraint()
     ID rDOF(rdf);
     
      // constraint matrix
-    Matrix Ccr(1,rdf);
+    Vector Ccr(rdf);
 
     for(int i = 0; i < rdf; i++) {
         int rNodei, rDOFi;
@@ -101,7 +101,7 @@ int OPS_EquationConstraint()
         }
         rNode(i) = rNodei;
         rDOF(i) = rDOFi - 1;
-        Ccr(0,i) = -rci / cc;
+        Ccr(i) = -rci / cc;
     }
 
     EQ_Constraint* theEQ = new EQ_Constraint(cNode,cDOF,Ccr,rNode,rDOF);
@@ -151,7 +151,7 @@ EQ_Constraint::EQ_Constraint(int nodeConstr, int constrainedDOF,
 
 
 // general constructor for ModelBuilder
-EQ_Constraint::EQ_Constraint(int nodeConstr, int constrainedDOF, Matrix &constr,
+EQ_Constraint::EQ_Constraint(int nodeConstr, int constrainedDOF, Vector &constr,
                                 ID &nodeRetain, ID &retainedDOF)
 :DomainComponent(nextTag++, CNSTRNT_TAG_EQ_Constraint), 
 nodeRetained(0), nodeConstrained(nodeConstr), 
@@ -166,7 +166,7 @@ constraint(0), constrDOF(constrainedDOF), retainDOF(0), initialized(false), dbTa
         exit(-1);
     }    
     
-    constraint = new Matrix(constr);
+    constraint = new Vector(constr);
     if (constraint == 0 || constr.noCols() != constr.noCols()) { 
         opserr << "MP_Constraint::MP_Constraint - ran out of memory 2\n";
         exit(-1);
@@ -295,15 +295,15 @@ EQ_Constraint::isTimeVarying(void) const
 }
 
 
-const Matrix &
+const Vector &
 EQ_Constraint::getConstraint(void)
 {
     if (constraint == 0) {
-        opserr << "EQ_Constraint::getConstraint - no Matrix was set\n";
+        opserr << "EQ_Constraint::getConstraint - no constraint was set\n";
         exit(-1);
     }    
 
-    // return the constraint matrix Ccr
+    // return the constraint vector Ccr
     return *constraint;    
 }
 
