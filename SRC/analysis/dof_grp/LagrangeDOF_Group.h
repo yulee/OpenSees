@@ -42,6 +42,7 @@
 #include <Vector.h>
 class SP_Constraint;
 class MP_Constraint;
+class EQ_Constraint;
 
 class LagrangeDOF_Group: public DOF_Group
 {
