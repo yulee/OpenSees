@@ -491,23 +491,13 @@ EQ_Constraint::recvSelf(int cTag, Channel &theChannel,
 void
 EQ_Constraint::Print(OPS_Stream &s, int flag)
 {     
-/*
     s << "EQ_Constraint: " << this->getTag() << "\n";
-    s << "\tNode Constrained: " << nodeConstrained;
-    s << " node Retained: " << nodeRetained << "\n";
-    if (constrDOF != 0 && retainDOF != 0) {
-      s << " constrained dof: ";
-      for (int i=0; i<(*constrDOF).Size(); i++)
-	s << (*constrDOF)(i)+1 << " ";
-      s << endln;
-	s << " retained dof: ";        
-      for (int i=0; i<(*retainDOF).Size(); i++)
-	s << (*retainDOF)(i)+1 << " ";
-      s << endln;
-      if (constraint != 0)
-	s << " constraint matrix: " << *constraint << "\n";
+    s << "Constrained Node: " << nodeConstrained << "at DOF: " << constrDOF + 1 << "\n";
+    for (int i = 0; i < (*nodeRetained).Size(); i++)
+        s << "Retained Node: " << (*nodeRetained)(i) << "at DOF: " << (*retainDOF)(i) + 1 << "\n";
+    if (constraint != 0)
+        s << " constraint vector: " << *constraint << "\n";
     }
-*/
 }
 
 
