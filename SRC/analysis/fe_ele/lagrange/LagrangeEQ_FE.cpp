@@ -295,24 +295,21 @@ LagrangeEQ_FE::getM_Force(const Vector &disp, double fact)
 void  
 LagrangeEQ_FE::determineTangent(void)
 {
-    const Matrix &constraint = theEQ->getConstraint();
-    int noRows = constraint.noRows();
-    int noCols = constraint.noCols();
+    const Vector &constraint = theEQ->getConstraint();
+    int noRows = 1;
+    int size = constraint.Size();
     int n = noRows+noCols;
     
     tang->Zero();    
 
-    for (int j=0; j<noRows; j++) {
-        (*tang)(n+j, j) = -alpha;
-        (*tang)(j, n+j) = -alpha;	
-    }
+    (*tang)(n, 0) = -alpha;
+    (*tang)(0, n) = -alpha;	
     
-    for (int i=0; i<noRows; i++)
-        for (int j=0; j<noCols; j++) {
-            double val = constraint(i,j) * alpha;
-            (*tang)(n+i, j+noRows) = val;
-            (*tang)(noRows+j, n+i) = val;
-        }
+    for (int i = 0; i < size; i++) {
+        double val = constraint(i) * alpha;
+        (*tang)(n, i+size) = val;
+        (*tang)(size+i, n) = val;
+    }
 }
 
 
