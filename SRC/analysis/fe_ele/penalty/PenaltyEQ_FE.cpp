@@ -294,7 +294,6 @@ PenaltyEQ_FE::determineTangent(void)
     // first determine [C] = [-I [Ccr]]
     C->Zero();
     const Vector &constraint = theEQ->getConstraint();
-    int noRows = 1;
     int size = constraint.Size();
     
     (*C)(0) = -1.0;
@@ -304,7 +303,7 @@ PenaltyEQ_FE::determineTangent(void)
     
     // now form the tangent: [K] = alpha * [C]^t[C]
     const Vector &Cref = *C;
-    *tang = Cref % Cref;
+    *tang = alpha * (Cref % Cref);
 }
 
 
