@@ -1,13 +1,11 @@
 import openseespy.opensees as ops
 import utils.vfo.vfo as vfo
 
-ops.wipe()
 ops.model('basic', '-ndm', 2, '-ndf', 2)
-ops.node( 1, 0.0, 0.0)
-nrow = 7; nrow1 = nrow + 1
-ncol = 7; ncol1 = ncol + 1
-for i in range(1, nrow1):
-    for j in range(1, ncol1):
+ops.node(1, 0.0, 0.0)
+nrow = 7; ncol = 7
+for i in range(1, nrow + 1):
+    for j in range(1, ncol + 1):
         ops.node(i * 10 + j, j, i)
 
 ops.fix(22, 1, 1)
@@ -32,10 +30,11 @@ for j in range(1, ncol):
 ops.equationConstraint(nrow * 10 + ncol, 2, 1.0, 10 + ncol, 2, -1.0, 1, 2, -1.0)
 
 vfo.createODB(model="model01", loadcase="static")
-ops.timeSeries('Linear',1)
-ops.pattern('Plain',1,1)
+ops.timeSeries('Linear', 1)
+ops.pattern('Plain', 1, 1)
 ops.load(1, 10.0, 10.0)
-ops.constraints('Penalty', 1.0e6, 1.0e6)
+# ops.constraints('Penalty', 1.0e6, 1.0e6)
+ops.constraints('Lagrange')
 ops.analysis('Static')
 ops.analyze(1)
 ops.wipe()
