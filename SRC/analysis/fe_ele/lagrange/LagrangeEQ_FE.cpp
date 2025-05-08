@@ -305,8 +305,8 @@ LagrangeEQ_FE::determineTangent(void)
     
     for (int i = 0; i < size; i++) {
         double val = constraint(i) * alpha;
-        (*tang)(size + 1, size + i) = val;
-        (*tang)(size + i, size + 1) = val;
+        (*tang)(size + 1, i + 1) = val;
+        (*tang)(i + 1, size + 1) = val;
     }
 }
 
