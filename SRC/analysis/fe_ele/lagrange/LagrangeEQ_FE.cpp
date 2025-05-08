@@ -46,11 +46,11 @@
 #include <EQ_Constraint.h>
 #include <DOF_Group.h>
 
-LagrangeEQ_FE::LagrangeEQ_FE(int tag, Domain &theDomain, EQ_Constraint &theEQ,
+LagrangeEQ_FE::LagrangeEQ_FE(int tag, Domain &theDomain, EQ_Constraint &TheEQ,
 			     DOF_Group &theGroup, double Alpha)
 :FE_Element(tag, 2+(TheEQ.getRetainedDOFs()).Size(),
  2+(TheEQ.getRetainedDOFs()).Size()),
- alpha(Alpha), theEQ(&theEQ), 
+ alpha(Alpha), theEQ(&TheEQ), 
  theConstrainedNode(0), theRetainedNode(0),
  theDofGroup(&theGroup), tang(0), resid(0)
 {
@@ -74,11 +74,9 @@ LagrangeEQ_FE::LagrangeEQ_FE(int tag, Domain &theDomain, EQ_Constraint &theEQ,
 	    exit(-1);
     }
 
-    DOF_Group *dofGrpPtr = 0;
-
-    dofGrpPtr = theConstrainedNode->getDOF_GroupPtr();
-    if (dofGrpPtr != 0) 
-        myDOF_Groups(0) = dofGrpPtr->getTag();	        
+    DOF_Group *theConstrainedNodeDOFGrpPtr = theConstrainedNode->getDOF_GroupPtr();
+    if (theConstrainedNodeDOFGrpPtr != 0) 
+        myDOF_Groups(0) = theConstrainedNodeDOFGrpPtr->getTag();	        
     else
         opserr << "WARNING LagrangeEQ_FE::LagrangeEQ_FE() - no DOF_Group with Constrained Node\n"; 
 
@@ -92,9 +90,9 @@ LagrangeEQ_FE::LagrangeEQ_FE(int tag, Domain &theDomain, EQ_Constraint &theEQ,
             opserr << nodeRetained(i) << endln;
             exit(-1);
         }
-        dofGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
-        if (dofGrpPtr != 0) 
-            myDOF_Groups(i+1) = dofGrpPtr->getTag();	    
+        DOF_Group *theRetainedNodeDOFGrpPtr = theRetainedNode[i]->getDOF_GroupPtr();
+        if (theRetainedNodeDOFGrpPtr != 0) 
+            myDOF_Groups(i+1) = theRetainedNodeDOFGrpPtr->getTag();	    
         else 
             opserr << "WARNING LagrangeEQ_FE::LagrangeEQ_FE() - no DOF_Group with Retained Node\n";
     }
@@ -142,7 +140,7 @@ LagrangeEQ_FE::setID(void)
     }    
     const ID &theConstrainedNodesID = theConstrainedNodesDOFs->getID();    
 
-    int constrainedDOFs = theEQ->getConstrainedDOFs();
+    int constrainedDOF = theEQ->getConstrainedDOFs();
 	if (constrainedDOF < 0 || constrainedDOF >= theConstrainedNode->getNumberDOF()) {
 	    opserr << "WARNING LagrangeEQ_FE::setID(void) - unknown DOF ";
 	    opserr << constrainedDOF << " at Node\n";
