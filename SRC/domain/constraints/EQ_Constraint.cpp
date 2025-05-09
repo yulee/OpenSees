@@ -436,7 +436,7 @@ EQ_Constraint::recvSelf(int cTag, Channel &theChannel,
             return result;  
         }
     }    
-    int size = data(4);
+    size = data(4);
     if (size != 0) {
         nodeRetained = new ID(size);
         int result = theChannel.recvID(dbTag1, cTag, *constrDOF);
