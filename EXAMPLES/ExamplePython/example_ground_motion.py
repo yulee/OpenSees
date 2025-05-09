@@ -3,7 +3,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import openseespy.opensees as ops
 import numpy as np
-# import utils.vfo.vfo as vfo
 
 ops.model('basic', '-ndm', 2, '-ndf', 3)
 ops.node( 1,-1.0, 0.0); ops.fix(1, 0, 1, 1)
@@ -21,7 +20,7 @@ ops.geomTransf('Linear', 1)
 ops.uniaxialMaterial('Steel01', 1, 3e2, 2e5, 0.1)
 ops.section('WFSection2d', 1, 1, 0.6, 0.05, 0.3, 0.1, 5, 1)
 ops.beamIntegration('Lobatto', 1, 1, 5)
-ops.uniaxialMaterial('Steel01', 2, 5e2, 2e5, 0.02)
+ops.uniaxialMaterial('Steel01', 2, 3e2, 2e5, 0.01)
 ops.section('WFSection2d', 2, 2, 0.6, 0.05, 0.3, 0.1, 5, 1)
 ops.beamIntegration('Lobatto', 2, 2, 5)
 
