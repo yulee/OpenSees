@@ -18,13 +18,13 @@
 **                                                                    **
 ** ****************************************************************** */
                                                                         
-// $Revision: 1.5 $
-// $Date: 2010-04-23 22:50:19 $
+// $Revision: 1.0 $
+// $Date: 2025-05-29$
 // $Source: /usr/local/cvs/OpenSees/SRC/domain/constraints/EQ_Constraint.cpp,v $
                                                                         
                                                                         
-// Written: fmk 
-// Created: 11/96
+// Written: Yuli Huang (yulee@berkeley.edu)
+// Created: 05/2020
 // Revision: A
 //
 // Purpose: This file contains the implementation of class EQ_Constraint.
@@ -56,7 +56,7 @@ int OPS_EquationConstraint()
 
     int numRemainingArgs = OPS_GetNumRemainingInputArgs();
     if(numRemainingArgs < 6 || numRemainingArgs % 3) {
-	    opserr<<"WARNING: invalid # of args: equationConstraint cNodeTag cdof ccoef rNodeTag1 rdof1 rcoef1 rNodeTag2 rdof2 rcoef2 ...\n";
+	    opserr<<"WARNING: invalid # of args: equationConstraint cNodeTag cDOF cCoef rNodeTag1 rDOF1 rCoef1 rNodeTag2 rDOF2 rCoef2 ...\n";
 	    return -1;
     }
 
@@ -320,82 +320,78 @@ const Vector& EQ_Constraint::getRetainedDOFsInitialDisplacement(void) const
 int 
 EQ_Constraint::sendSelf(int cTag, Channel &theChannel)
 {
-/*
-    static ID data(11);
+    static ID data(10);
+    static Vector dataUc0(1);
     int dataTag = this->getDbTag();
 
     data(0) = this->getTag(); 
-    data(1) = nodeRetained;
-    data(2) = nodeConstrained;
-    if (constraint == 0) data(3) = 0; else data(3) = constraint->noRows();
-    if (constraint == 0) data(4) = 0; else data(4) = constraint->noCols();    
-    if (constrDOF == 0) data(5) = 0; else data(5) = constrDOF->Size();    
-    if (retainDOF == 0) data(6) = 0; else data(6) = retainDOF->Size();        
+    data(1) = nodeConstrained;
+    data(2) = constrDOF;
+    if (constraint == 0) data(3) = 0; else data(3) = constraint->Size();
+    if (nodeRetained== 0) data(4) = 0; else data(4) = nodeRetained->Size();    
+    if (retainDOF == 0) data(5) = 0; else data(5) = retainDOF->Size();        
     
     // need two database tags for ID objects
-    if (constrDOF != 0 && dbTag1 == 0) 
+    if (nodeRetained != 0 && dbTag1 == 0) 
       dbTag1 = theChannel.getDbTag();
     if (retainDOF != 0 && dbTag2 == 0) 
       dbTag2 = theChannel.getDbTag();
 
-    data(7) = dbTag1;
-    data(8) = dbTag2;
-    data(9) = nextTag;
-    data(10) = static_cast<int>(initialized);
+    data(6) = dbTag1;
+    data(7) = dbTag2;
+    data(8) = nextTag;
+    data(9) = static_cast<int>(initialized);
 
     int result = theChannel.sendID(dataTag, cTag, data);
     if (result < 0) {
-	opserr << "WARNING EQ_Constraint::sendSelf - error sending ID data\n";
-	return result;  
-    }    
+        opserr << "WARNING EQ_Constraint::sendSelf - error sending ID data\n";
+        return result;
+    }
     
-    if (constraint != 0 && constraint->noRows() != 0) {
-	int result = theChannel.sendMatrix(dataTag, cTag, *constraint);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::sendSelf ";
-	    opserr << "- error sending Matrix data\n"; 
-	    return result;  
-	}
+    dataUc0(0) = Uc0;
+
+    result = theChannel.sendVector(dataTag, cTag, dataUc0);
+    if (result < 0) {
+        opserr << "WARNING EQ_Constraint::sendSelf - error sending Vector data\n";
+        return result;
     }
 
-    if (constrDOF != 0 && constrDOF->Size() != 0) {
-	int result = theChannel.sendID(dbTag1, cTag, *constrDOF);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::sendSelf ";
-	    opserr << "- error sending constrained data\n"; 
-	    return result;  
-	}
+    if (constraint != 0 && constraint->Size() != 0) {
+        int result = theChannel.sendVector(dataTag, cTag, *constraint);
+        if (result < 0) {
+            opserr << "WARNING EQ_Constraint::sendSelf ";
+            opserr << "- error sending Vector data\n"; 
+            return result;  
+        }
+    }
+
+    if (nodeRetained != 0 && nodeRetained->Size() != 0) {
+        int result = theChannel.sendID(dbTag1, cTag, *nodeRetained);
+        if (result < 0) {
+            opserr << "WARNING EQ_Constraint::sendSelf ";
+            opserr << "- error sending nodeRetained data\n"; 
+            return result;  
+        }
     }
 
     if (retainDOF != 0 && retainDOF->Size() != 0) {
-	int result = theChannel.sendID(dbTag2, cTag, *retainDOF);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::sendSelf ";
-	    opserr << "- error sending retained data\n"; 
-	    return result;  
-	}
-    }
-    
-    // send initial displacement vectors.
-    // we need 2 database tags because they have the same size,
-    // but we can reuse the tags used for ID objects, since they go into different files
-    if (Uc0.Size() > 0) {
-        int result = theChannel.sendVector(dbTag1, cTag, Uc0);
+        int result = theChannel.sendID(dbTag2, cTag, *retainDOF);
         if (result < 0) {
             opserr << "WARNING EQ_Constraint::sendSelf ";
-            opserr << "- error sending constrained initial displacement\n";
-            return result;
+            opserr << "- error sending retainDOF data\n"; 
+            return result;  
         }
     }
+    
+    // send initial displacement vectors at retained node.
     if (Ur0.Size() > 0) {
-        int result = theChannel.sendVector(dbTag2, cTag, Ur0);
+        int result = theChannel.sendVector(dbTag1, cTag, Ur0);
         if (result < 0) {
             opserr << "WARNING EQ_Constraint::sendSelf ";
             opserr << "- error sending retained initial displacement\n";
             return result;
         }
     }
-*/
     return 0;
 }
 
@@ -404,85 +400,77 @@ int
 EQ_Constraint::recvSelf(int cTag, Channel &theChannel, 
 			FEM_ObjectBroker &theBroker)
 {
-/*
     int dataTag = this->getDbTag();
-    static ID data(11);
+    static ID data(10);
+    static Vector dataUc0(1);
     int result = theChannel.recvID(dataTag, cTag, data);
     if (result < 0) {
-	opserr << "WARNING EQ_Constraint::recvSelf - error receiving ID data\n";
-	return result;  
+        opserr << "WARNING EQ_Constraint::recvSelf - error receiving ID data\n";
+        return result;  
     }    
 
     this->setTag(data(0));
-    nodeRetained = data(1);
-    nodeConstrained = data(2);
-    int numRows = data(3); 
-    int numCols = data(4);
-    dbTag1 = data(7);
-    dbTag2 = data(8);
-    nextTag = data(9);
-    initialized = static_cast<bool>(data(10));
+    nodeConstrained = data(1);
+    constrDOF = data(2);
+    dbTag1 = data(6);
+    dbTag2 = data(7);
+    nextTag = data(8);
+    initialized = static_cast<bool>(data(9));
 
-    if (numRows != 0 && numCols != 0) {
-	constraint = new Matrix(numRows,numCols);
-	
-	int result = theChannel.recvMatrix(dataTag, cTag, *constraint);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::recvSelf ";
-	    opserr << "- error receiving Matrix data\n"; 
-	    return result;  
-	}
-    }    
-    int size = data(5);
+    result = theChannel.recvVector(dataTag, cTag, dataUc0);
+    if (result < 0) {
+        opserr << "WARNING EQ_Constraint::recvSelf - error receiving Vector data\n";
+        return result;  
+    }
+
+    Uc0 = dataUc0(0);
+
+    int size = data(3); 
     if (size != 0) {
-	constrDOF = new ID(size);
-	int result = theChannel.recvID(dbTag1, cTag, *constrDOF);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::recvSelf ";
-	    opserr << "- error receiving constrained data\n"; 
-	    return result;  
-	}	
+        constraint = new Vector(size);
+        
+        int result = theChannel.recvVector(dataTag, cTag, *constraint);
+        if (result < 0) {
+            opserr << "WARNING EQ_Constraint::recvSelf ";
+            opserr << "- error receiving Vector data\n"; 
+            return result;  
+        }
+    }    
+    int size = data(4);
+    if (size != 0) {
+        nodeRetained = new ID(size);
+        int result = theChannel.recvID(dbTag1, cTag, *constrDOF);
+        if (result < 0) {
+            opserr << "WARNING EQ_Constraint::recvSelf ";
+            opserr << "- error receiving nodeRetained data\n"; 
+            return result;  
+        }	
     }
     
-    size = data(6);
+    size = data(5);
     if (size != 0) {
-	retainDOF = new ID(size);
-	int result = theChannel.recvID(dbTag2, cTag, *retainDOF);
-	if (result < 0) {
-	    opserr << "WARNING EQ_Constraint::recvSelf ";
-	    opserr << "- error receiving retained data\n"; 
-	    return result;  
-	}	
+        retainDOF = new ID(size);
+        int result = theChannel.recvID(dbTag2, cTag, *retainDOF);
+        if (result < 0) {
+            opserr << "WARNING EQ_Constraint::recvSelf ";
+            opserr << "- error receiving retained data\n"; 
+            return result;  
+        }	
     }    
     
     // recv initial displacement vectors.
-    // we need 2 database tags because they have the same size,
-    // but we can reuse the tags used for ID objects, since they go into different files
-    if (constrDOF && constrDOF->Size() > 0)
-        Uc0.resize(constrDOF->Size());
-    else
-        Uc0 = Vector();
     if (retainDOF && retainDOF->Size() > 0)
         Ur0.resize(retainDOF->Size());
     else
         Ur0 = Vector();
-    if (Uc0.Size() > 0) {
-        int result = theChannel.recvVector(dbTag1, cTag, Uc0);
-        if (result < 0) {
-            opserr << "WARNING EQ_Constraint::recvSelf ";
-            opserr << "- error receiving constrained initial displacement\n";
-            return result;
-        }
-    }
     if (Ur0.Size() > 0) {
-        int result = theChannel.recvVector(dbTag2, cTag, Ur0);
+        int result = theChannel.recvVector(dbTag1, cTag, Ur0);
         if (result < 0) {
             opserr << "WARNING EQ_Constraint::recvSelf ";
             opserr << "- error receiving retained initial displacement\n";
             return result;
         }
     }
-*/
     return 0;
 }
 
