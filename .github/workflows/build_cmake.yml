@@ -35,8 +35,8 @@ jobs:
         run: pip install numpy
       # - name: scipy
       #   run: pip install scipy
-      - name: vfo
-        run: pip install vfo
+      # - name: vfo
+      #   run: pip install vfo
       # - name: xvfb
       #   run: sudo apt-get install xvfb
       - name: 2.4.2. Building the OpenSees Applications and Python module
