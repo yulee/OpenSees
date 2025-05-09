@@ -73,7 +73,8 @@ jobs:
             path: |
               ground_motion.png
               model.png
-#              ./disp.out
+              disp.out
+              force.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
 #          run: |
