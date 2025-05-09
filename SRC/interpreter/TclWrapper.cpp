@@ -456,7 +456,7 @@ static int Tcl_ops_equalDOF(ClientData clientData, Tcl_Interp *interp, int argc,
 static int Tcl_ops_equationConstraint(ClientData clientData, Tcl_Interp *interp, int argc,   TCL_Char **argv) {
     wrapper->resetCommandLine(argc, 1, argv);
 
-    if (OPS_equationConstraint() < 0) return TCL_ERROR;
+    if (OPS_EquationConstraint() < 0) return TCL_ERROR;
 
     return TCL_OK;
 }
