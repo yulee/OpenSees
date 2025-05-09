@@ -18,7 +18,7 @@ ops.node(32, 4.0, 4.0)
 # ops.nDMaterial('ElasticIsotropic', 2, 10.0, 0.0)
 
 ops.geomTransf('Linear', 1)
-ops.uniaxialMaterial('Steel01', 1, 2e10, 2e5, 0.1)
+ops.uniaxialMaterial('Steel01', 1, 2e2, 2e5, 0.1)
 
 # ops.element('elasticBeamColumn', 11, 11, 21, 0.1, 1e5, 0.01, 1)
 # ops.element('elasticBeamColumn', 12, 12, 22, 0.1, 1e5, 0.01, 1)
@@ -26,7 +26,7 @@ ops.uniaxialMaterial('Steel01', 1, 2e10, 2e5, 0.1)
 # ops.element('beamWithHinges', 11, 11, 21, 1, 0.1, 1, 0.1, 0.1, 1e5, 0.01, 1)
 # ops.element('beamWithHinges', 12, 12, 22, 1, 0.1, 1, 0.1, 0.1, 1e5, 0.01, 1)
 
-ops.section('WFSection2d', 1, 1, 0.05, 0.01, 0.02, 0.01, 5, 1)
+ops.section('WFSection2d', 1, 1, 0.6, 0.05, 0.3, 0.1, 5, 1)
 ops.beamIntegration('Lobatto', 1, 1, 5)
 ops.element('forceBeamColumn', 11, 11, 21, 1, 1)
 ops.element('forceBeamColumn', 12, 12, 22, 1, 1)
