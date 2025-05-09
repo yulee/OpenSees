@@ -439,7 +439,7 @@ EQ_Constraint::recvSelf(int cTag, Channel &theChannel,
     size = data(4);
     if (size != 0) {
         nodeRetained = new ID(size);
-        int result = theChannel.recvID(dbTag1, cTag, *constrDOF);
+        int result = theChannel.recvID(dbTag1, cTag, *nodeRetained);
         if (result < 0) {
             opserr << "WARNING EQ_Constraint::recvSelf ";
             opserr << "- error receiving nodeRetained data\n"; 
