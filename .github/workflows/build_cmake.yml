@@ -74,7 +74,8 @@ jobs:
               ground_motion.png
               model.png
               disp.out
-              force.out
+              force1.out
+              force2.out
 #        # Simple MP sanity test
 #        - name: Verification OpenSeesPyMP
 #          run: |
