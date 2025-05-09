@@ -14,7 +14,7 @@ ops.node(31, 0.0, 4.0)
 ops.node(32, 4.0, 4.0)
 
 ops.geomTransf('Linear', 1)
-ops.uniaxialMaterial('Steel01', 1, 3e2, 2e5, 0.2)
+ops.uniaxialMaterial('Steel01', 1, 3e2, 2e5, 0.1)
 ops.section('WFSection2d', 1, 1, 0.6, 0.05, 0.3, 0.1, 5, 1)
 ops.beamIntegration('Lobatto', 1, 1, 5)
 ops.uniaxialMaterial('Steel01', 2, 5e2, 2e5, 0.01)
