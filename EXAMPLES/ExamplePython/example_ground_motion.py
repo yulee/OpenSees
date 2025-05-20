@@ -40,7 +40,7 @@ ops.analysis('Static')
 ops.recorder('Node', '-file', 'disp.out', '-time', '-node', 21, 31, '-dof', 1, 'disp')
 ops.recorder('Element', '-file', 'force1.out', '-time', '-ele', 11, 12, 'force')
 ops.recorder('Element', '-file', 'force2.out', '-time', '-ele', 21, 22, 'force')
-ops.analyze(30)
+ops.analyze(50)
 ops.wipe()
 
 disp = np.loadtxt('disp.out')
