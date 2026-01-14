@@ -26,7 +26,6 @@ ops.element('zeroLength',1,1,2,'-mat',1,'-dir',1,'-doRayleigh', 1)
 times=np.arange(0,60.01,0.01)
 values=F/F_theta*(1.0-np.cos(F_theta*times))
 ops.timeSeries('Path',1,'-time',*times,'-values',*values,'-factor',1.0)
-#pattern('UniformExcitation', patternTag, dir, '-disp', dispSeriesTag, '-vel', velSeriesTag, '-accel', accelSeriesTag, '-vel0', vel0, '-fact', fact)
 ops.pattern('UniformExcitation', 1, 1,'-vel', 1,'-fact', -1.0)
 
 lambda_ = ops.eigen("-fullGenLapack", 1)
@@ -53,11 +52,11 @@ Nsteps=6000
 dt=0.01
 ops.reactions()
 for i in range(Nsteps):
-ok = ops.analyze(1, dt)
-time = np.append(time, [ops.getTime()])
-u = np.append(u, [ops.nodeDisp(2)], axis=0)
-v = np.append(v, [ops.nodeVel(2)], axis=0)
-a = np.append(a, [ops.nodeAccel(2)], axis=0)
+    ok = ops.analyze(1, dt)
+    time = np.append(time, [ops.getTime()])
+    u = np.append(u, [ops.nodeDisp(2)], axis=0)
+    v = np.append(v, [ops.nodeVel(2)], axis=0)
+    a = np.append(a, [ops.nodeAccel(2)], axis=0)
 
 plt.figure(figsize=(10, 4))
 #plt.plot(t_exact, dis_exact, label="exact")
