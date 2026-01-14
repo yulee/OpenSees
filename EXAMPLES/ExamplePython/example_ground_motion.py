@@ -1,12 +1,8 @@
-import sys
-sys.path.insert(0, '../../SRC/interpreter/')
-# sys.path.insert(0, '../build/lib/')
-import opensees as ops
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-# import openseespy.opensees as ops
+import openseespy.opensees as ops
 import numpy as np
-#from scipy.integrate import cumulative_trapezoid as cumtrapz
 
 ops.wipe()
 ops.model('basic','-ndm',1,'-ndf',1)
